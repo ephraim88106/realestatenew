@@ -9,7 +9,7 @@
 - [x] 연수구 송도동 — lawd 28185, umd 송도동 — data/incheon/yeonsu/songdo.json (2026-07-22 완료, 커밋 9f39630)
 - [ ] 남동구 논현동 — lawd 28200, umd 논현동 — data/incheon/namdong/nonhyeon.json
 - [ ] 부평구 삼산동 — lawd 28237, umd 삼산동 — data/incheon/bupyeong/samsan.json
-- [x] 계양구 작전동 — lawd 28245, umd 작전동 — data/incheon/gyeyang/jakjeon.json (2026-07-22 완료, 커밋 예정)
+- [x] 계양구 작전동 — lawd 28245, umd 작전동 — data/incheon/gyeyang/jakjeon.json (2026-07-22 완료, 커밋 8a25011)
 - [ ] 서해구 청라동 — lawd 28260, umd 청라동 — data/incheon/seo/cheongna.json
 - [ ] 검단구 검단신도시 — lawd 28260, umd 확인 필요(대곡동/원당동 인근일 수 있음, umd 없이 받아서 지번으로 판별) — data/incheon/seo/geomdan.json
 - [ ] 검단구 아라동 — lawd 28260, umd 아라동 — data/incheon/seo/ara.json
