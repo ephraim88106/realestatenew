@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인천 온라인 임장</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root{
+  --ink:#081b24;--ink-2:#0d2632;--ink-3:#123241;--line:#1d4557;--line-soft:#16394a;
+  --teal:#2fb9a6;--teal-dim:#1f8577;--brass:#d3ac5f;--brass-dim:#a8863f;
+  --paper:#eaf3f1;--mut:#7fa0a7;--mut-2:#557079;--warn:#e08a5a;
+  --up:#e0684f;--down:#4f9fe0;--flat:#8ea9a0;--r:14px;
+}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:linear-gradient(0deg,rgba(8,27,36,.4),rgba(8,27,36,.4)),
+  repeating-linear-gradient(0deg,transparent 0 38px,var(--line-soft) 38px 39px),
+  repeating-linear-gradient(90deg,transparent 0 38px,var(--line-soft) 38px 39px),var(--ink);
+  color:var(--paper);font-family:"Pretendard",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+.wrap{max-width:960px;margin:0 auto;padding:22px 18px 80px}
+.tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:20px;flex-wrap:wrap}
+.brandmark{display:flex;align-items:center;gap:11px}
+.compass{width:34px;height:34px;flex:none}
+.eyebrow{font-size:11px;letter-spacing:.34em;color:var(--teal);text-transform:uppercase;margin:0 0 3px}
+.title{font-size:25px;font-weight:800;letter-spacing:-.01em;margin:0;line-height:1.1}
+.coord{font-size:11px;color:var(--mut);letter-spacing:.08em;text-align:right}
+.coord b{color:var(--paper);font-weight:600;font-size:14px}
+.navwrap{margin-bottom:22px}
+.navrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.navrow:last-child{margin-bottom:0}
+.chip-btn{border:1px solid var(--line);background:var(--ink-2);color:var(--mut);font:inherit;font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s}
+.chip-btn.gu[aria-selected="true"]{background:var(--brass);border-color:var(--brass);color:#241a06;font-weight:700}
+.chip-btn.dong[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#04231e;font-weight:700}
+.chip-btn:disabled{opacity:.4;cursor:not-allowed}
+.chip-btn small{opacity:.7;margin-left:5px;font-size:10px}
+.striphead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:9px;flex-wrap:wrap}
+.eyebrow2{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.src{font-size:11px;color:var(--mut-2)}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:8px}
+.cell{background:var(--ink-2);padding:14px 15px}
+.cell .k{font-size:11px;color:var(--mut);margin-bottom:6px}
+.cell .v{font-size:20px;font-weight:800}.cell .v.sm{font-size:15px}
+.badge-flat{color:var(--flat)}.badge-down{color:var(--down)}.badge-up{color:var(--up)}
+.stripnote{font-size:11px;color:var(--mut-2);margin:0 2px 26px}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.tabs{display:inline-flex;background:var(--ink-2);border:1px solid var(--line);border-radius:10px;padding:3px}
+.tab{border:none;background:none;color:var(--mut);font:inherit;font-weight:600;font-size:13px;padding:7px 14px;border-radius:8px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--brass);color:#241a06}
+.pricetog{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--mut)}
+.seg{display:inline-flex;background:var(--ink-2);border:1px solid var(--line);border-radius:10px;padding:3px}
+.segbtn{border:none;background:none;color:var(--mut);font:inherit;font-size:12px;font-weight:700;padding:7px 12px;border-radius:7px;cursor:pointer;transition:.15s}
+.segbtn[data-mode="real"][aria-selected="true"]{background:var(--teal-dim);color:var(--paper)}
+.segbtn[data-mode="ask"][aria-selected="true"]{background:var(--warn);color:#2a1408}
+.segbtn[data-mode="kb"][aria-selected="true"]{background:var(--brass);color:#241a06}
+.rankgrid{display:grid;gap:12px}
+.card{position:relative;display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:start;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:.15s;text-align:left;width:100%;font:inherit;color:inherit}
+.card:hover{border-color:var(--teal);transform:translateY(-1px)}
+.card.top{border-color:var(--brass);background:linear-gradient(180deg,rgba(211,172,95,.09),transparent 60%),var(--ink-2)}
+.seal{width:52px;height:52px;flex:none;position:relative}
+.rank-n{font-size:23px;font-weight:800;line-height:52px;text-align:center;position:absolute;inset:0;color:var(--brass)}
+.card:not(.top) .rank-n{color:var(--mut)}
+.cinfo{padding-top:3px}
+.cname{font-size:17px;font-weight:800;letter-spacing:-.01em;margin:0 0 3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cmeta{font-size:12px;color:var(--mut)}.cmeta b{color:var(--paper);font-weight:600}
+.pricebox{text-align:right;flex:none;padding-top:3px}
+.price{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.price .won{font-size:13px;font-weight:600;color:var(--mut);margin-left:2px}
+.plabel{font-size:11px;color:var(--mut);margin-top:2px}
+.tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap}
+.tag.prov{background:rgba(224,138,90,.16);color:var(--warn);border:1px solid rgba(224,138,90,.4)}
+.tag.real{background:rgba(47,185,166,.14);color:var(--teal);border:1px solid rgba(47,185,166,.35)}
+.tag.kb{background:rgba(211,172,95,.16);color:var(--brass);border:1px solid rgba(211,172,95,.4)}
+.scorewrap{grid-column:2/4;display:flex;align-items:center;gap:13px;margin-top:13px}
+.scorewrap .lab{font-size:11px;color:var(--mut);white-space:nowrap;letter-spacing:.04em}
+.scorebar{flex:1;height:8px;background:var(--line-soft);border-radius:4px;overflow:hidden}
+.scorebar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal-dim),var(--brass))}
+.scorenum{font-size:24px;font-weight:800;color:var(--brass);white-space:nowrap;line-height:1;letter-spacing:-.02em}
+.scorenum small{font-size:12px;color:var(--mut);font-weight:600}
+.subline{grid-column:2/4;font-size:11px;color:var(--mut-2);margin-top:7px}.subline b{color:var(--mut);font-weight:600}
+.tierlabel{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin:24px 2px 11px;display:flex;align-items:center;gap:12px}
+.tierlabel::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.smalllist{display:grid;gap:8px}
+.srow{display:grid;grid-template-columns:30px 1fr auto auto;gap:13px;align-items:center;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:10px;padding:11px 15px;cursor:pointer;transition:.15s;text-align:left;width:100%;font:inherit;color:inherit}
+.srow:hover{border-color:var(--teal);transform:translateY(-1px)}
+.srow .sn{font-size:15px;font-weight:800;color:var(--mut);text-align:center}
+.srow .snm{font-size:14px;font-weight:700;line-height:1.3}.srow .smeta{font-size:11px;color:var(--mut)}
+.srow .sp{font-size:15px;font-weight:800;text-align:right;white-space:nowrap}.srow .sp .won{font-size:11px;color:var(--mut);font-weight:600}
+.srow .ss{text-align:right;min-width:46px}.srow .ss .n{font-size:16px;font-weight:800;color:var(--brass);line-height:1}
+.srow .ss small{display:block;font-size:9px;color:var(--mut-2);font-weight:600;letter-spacing:.06em;margin-top:2px}
+.empty{background:var(--ink-2);border:1px dashed var(--line);border-radius:var(--r);padding:34px 20px;text-align:center;color:var(--mut);font-size:14px}
+.scrim{position:fixed;inset:0;background:rgba(3,12,16,.62);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(480px,100%);background:var(--ink);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .24s cubic-bezier(.4,0,.2,1);z-index:50;overflow-y:auto}
+.drawer.on{transform:none}
+.dhead{position:sticky;top:0;background:var(--ink-2);border-bottom:1px solid var(--line);padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;z-index:2}
+.dhead h2{font-size:19px;font-weight:800;margin:0 0 4px}.dhead .sub{font-size:12px;color:var(--mut)}
+.xbtn{border:1px solid var(--line);background:var(--ink-3);color:var(--paper);width:34px;height:34px;border-radius:9px;font-size:17px;cursor:pointer;flex:none;line-height:1}
+.dbody{padding:20px}.sect{margin-bottom:22px}
+.sect>h3{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin:0 0 11px;border-bottom:1px solid var(--line-soft);padding-bottom:7px}
+.narr{font-size:13px;color:#c7d7d4;line-height:1.68;margin:12px 0 0}
+.specgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:10px;overflow:hidden}
+.spec{background:var(--ink-2);padding:11px 13px}.spec .k{font-size:11px;color:var(--mut);margin-bottom:3px}.spec .v{font-size:14px;font-weight:700}
+.pyeong{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.pbtn{border:1px solid var(--line);background:var(--ink-2);color:var(--mut);font:inherit;font-size:12px;font-weight:600;padding:6px 11px;border-radius:8px;cursor:pointer}
+.pbtn[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#04231e}
+.pricepanel{background:var(--ink-2);border:1px solid var(--line);border-radius:11px;padding:15px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.pricepanel .big{font-size:26px;font-weight:800;letter-spacing:-.02em}.pricepanel .big .won{font-size:14px;color:var(--mut);font-weight:600}
+.pricepanel .side{text-align:right;font-size:12px;color:var(--mut);line-height:1.7}.pricepanel .side b{color:var(--paper)}
+.loclist{display:flex;flex-direction:column;gap:9px}
+.loc{display:flex;gap:11px;align-items:flex-start;font-size:13px}
+.loc .ico{width:20px;flex:none;color:var(--teal);font-size:14px;text-align:center;margin-top:1px}
+.loc .lt{color:var(--mut)}.loc .lv{color:var(--paper)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid var(--line-soft)}
+.chip.pos{background:rgba(47,185,166,.10);border-color:rgba(47,185,166,.3);color:#9fe4d8}
+.chip.neg{background:rgba(224,104,79,.10);border-color:rgba(224,104,79,.3);color:#f0ad9c}
+.brk{display:flex;flex-direction:column;gap:9px}
+.brkrow{display:grid;grid-template-columns:64px 1fr 40px;align-items:center;gap:10px;font-size:12px}
+.brkrow .bl{color:var(--mut)}.brktrack{height:6px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.brktrack i{display:block;height:100%;background:var(--teal-dim)}.brkrow .bv{text-align:right;font-weight:700;color:var(--paper)}
+.brk .wlabel{font-size:10px;color:var(--mut-2)}
+.maplink{display:inline-flex;align-items:center;gap:8px;margin-top:4px;font-size:13px;font-weight:600;color:var(--teal);text-decoration:none;border:1px solid var(--teal-dim);border-radius:9px;padding:9px 14px}
+.maplink:hover{background:rgba(47,185,166,.1)}
+.disc{font-size:11px;color:var(--mut-2);line-height:1.7;border-top:1px solid var(--line-soft);margin-top:34px;padding-top:14px}
+.disc code{color:var(--teal);background:var(--ink-2);padding:1px 5px;border-radius:4px;font-size:11px}
+@media(max-width:640px){
+  .strip{grid-template-columns:1fr 1fr}
+  .card{grid-template-columns:44px 1fr;grid-template-areas:"s n" "s p"}
+  .seal{grid-area:s}.cinfo{grid-area:n}.pricebox{grid-area:p;text-align:left;margin-top:6px}
+  .scorewrap,.subline{grid-column:1/3}
+  .srow{grid-template-columns:26px 1fr auto;gap:10px}.srow .sp{display:none}
+  .title{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="brandmark">
+      <svg class="compass" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18.5" stroke="var(--teal)" stroke-width="1.3"/>
+        <circle cx="20" cy="20" r="13" stroke="var(--line)" stroke-width="1"/>
+        <path d="M20 5 L23 20 L20 35 L17 20 Z" fill="var(--brass)"/>
+        <circle cx="20" cy="20" r="2" fill="var(--paper)"/>
+      </svg>
+      <div>
+        <p class="eyebrow">인천 부동산 · 온라인 임장</p>
+        <h1 class="title">발품 대신 손품, 동네 대장 톱10</h1>
+      </div>
+    </div>
+    <div class="coord">
+      <div id="coord-loc"><b>—</b></div>
+      <div id="asof" class="tnum"></div>
+    </div>
+  </header>
+
+  <div class="navwrap">
+    <div class="navrow" id="guNav" aria-label="구 선택"></div>
+    <div class="navrow" id="dongNav" aria-label="동 선택"></div>
+  </div>
+
+  <section aria-label="시장 동향">
+    <div class="striphead">
+      <span class="eyebrow2">동별 시장 동향</span>
+      <span class="src">출처 · KB부동산 · 한국부동산원 지역통계 (합법·무료)</span>
+    </div>
+    <div class="strip" id="strip"></div>
+    <p class="stripnote" id="stripnote"></p>
+  </section>
+
+  <div class="controls">
+    <div class="tabs" role="tablist" aria-label="면적 기준">
+      <button class="tab" role="tab" aria-selected="true" data-basis="p84">84㎡ 기준</button>
+      <button class="tab" role="tab" aria-selected="false" data-basis="max">면적 무제한</button>
+    </div>
+    <div class="pricetog">가격 표기
+      <div class="seg" id="seg" role="tablist" aria-label="가격 표기 기준">
+        <button class="segbtn" data-mode="real" aria-selected="true">실거래</button>
+        <button class="segbtn" data-mode="ask" aria-selected="false">호가</button>
+        <button class="segbtn" data-mode="kb" aria-selected="false">KB시세</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rankgrid" id="rankgrid"></div>
+  <div id="smallwrap"></div>
+
+  <p class="disc">
+    <b>시세 3종</b> — <span class="tag real" style="display:inline-block">실거래</span> 국토부 실거래가(<code>/api/trade</code> 연동 예정) ·
+    <span class="tag prov" style="display:inline-block">호가</span> 매물값 ·
+    <span class="tag kb" style="display:inline-block">KB·참고</span> KB시세. 동향은 KB·부동산원 지역통계.
+    데이터는 동별 JSON(<code>data/…/&lt;동&gt;.json</code>)으로 분리 — 새 동은 파일 추가 + <code>regions.json</code> 한 줄이면 됩니다.
+    종합점수: 시세 45 · 입지 20 · 학군 15 · 신축 10 · 규모 10 (순위는 실거래 기준).
+  </p>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dhead"><div><h2 id="d-name"></h2><div class="sub" id="d-sub"></div></div>
+    <button class="xbtn" id="xbtn" aria-label="닫기">✕</button></div>
+  <div class="dbody" id="d-body"></div>
+</aside>
+
+<script>
+let REGIONS=null, CURRENT=null, WEIGHTS=null;
+let STATE={basis:"p84", mode:"real"};
+
+/* ---------- 데이터 로드 ---------- */
+async function init(){
+  try{ REGIONS = await (await fetch("regions.json",{cache:"no-cache"})).json(); }
+  catch(e){ document.getElementById("rankgrid").innerHTML=`<div class="empty">regions.json을 불러오지 못했어요.</div>`; return; }
+  renderGuNav();
+  const firstGu = REGIONS.gu[0];
+  selectGu(firstGu);
+}
+function renderGuNav(){
+  document.getElementById("guNav").innerHTML = REGIONS.gu.map((g,i)=>
+    `<button class="chip-btn gu" data-i="${i}" aria-selected="${i===0}">${g.name}</button>`).join("");
+  document.querySelectorAll("#guNav .gu").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("#guNav .gu").forEach(x=>x.setAttribute("aria-selected","false"));
+    b.setAttribute("aria-selected","true"); selectGu(REGIONS.gu[+b.dataset.i]);
+  });
+}
+function selectGu(gu){
+  const live = gu.dong.filter(d=>d.live);
+  document.getElementById("dongNav").innerHTML = gu.dong.map((d,i)=>
+    `<button class="chip-btn dong" data-i="${i}" ${d.live?"":"disabled"} aria-selected="false">${d.name}${d.live?"":"<small>준비중</small>"}</button>`).join("");
+  document.querySelectorAll("#dongNav .dong").forEach(b=>{ if(b.disabled)return;
+    b.onclick=()=>{ document.querySelectorAll("#dongNav .dong").forEach(x=>x.setAttribute("aria-selected","false"));
+      b.setAttribute("aria-selected","true"); loadDong(gu, gu.dong[+b.dataset.i]); }; });
+  if(live.length){ const idx = gu.dong.indexOf(live[0]);
+    const btn=document.querySelector(`#dongNav .dong[data-i="${idx}"]`); if(btn) btn.setAttribute("aria-selected","true");
+    loadDong(gu, live[0]);
+  } else { CURRENT=null; renderEmpty(gu.name); }
+}
+async function loadDong(gu, dong){
+  document.getElementById("coord-loc").innerHTML=`${gu.name} · <b>${dong.name}</b>`;
+  try{ CURRENT = await (await fetch(dong.data,{cache:"no-cache"})).json(); }
+  catch(e){ renderEmpty(dong.name); return; }
+  WEIGHTS = CURRENT.weights;
+  renderRegion(CURRENT.region);
+  renderRank();
+}
+function renderEmpty(name){
+  document.getElementById("strip").innerHTML="";
+  document.getElementById("stripnote").textContent="";
+  document.getElementById("rankgrid").innerHTML=`<div class="empty">${name} 데이터는 준비 중이에요.</div>`;
+  document.getElementById("smallwrap").innerHTML="";
+}
+
+/* ---------- 점수/랭킹 ---------- */
+function norm(v,min,max){ if(max===min) return 100; return Math.max(0,Math.min(100,(v-min)/(max-min)*100)); }
+function basePrice(d,basis){
+  if(basis==="p84"){ const s=d.sizes.find(x=>x.m2>=82&&x.m2<=90); return s?{s,price:s.real}:null; }
+  const s=d.sizes.reduce((a,b)=>b.real>a.real?b:a); return {s,price:s.real};
+}
+function rank(basis){
+  const pool=[];
+  CURRENT.apts.forEach(d=>{ const bp=basePrice(d,basis); if(bp) pool.push({d,bp}); });
+  const prices=pool.map(p=>p.bp.price), hh=pool.map(p=>p.d.households);
+  const [pmin,pmax]=[Math.min(...prices),Math.max(...prices)], [hmin,hmax]=[Math.min(...hh),Math.max(...hh)];
+  pool.forEach(p=>{
+    const sub={ sise:norm(p.bp.price,pmin,pmax), ipji:p.d.ipji, hakgun:p.d.hakgun,
+      sinchuk:norm(p.d.year,2003,2026), gyumo:norm(p.d.households,hmin,hmax) };
+    p.sub=sub; p.total=Object.keys(WEIGHTS).reduce((t,k)=>t+sub[k]*WEIGHTS[k],0)/100;
+  });
+  pool.sort((a,b)=>b.total-a.total);
+  return pool.slice(0,10);
+}
+const won=n=>`${n.toLocaleString(undefined,{maximumFractionDigits:1})}<span class="won">억</span>`;
+const priceOf=(s,m)=> m==="real"?s.real:m==="ask"?s.ask:s.kb;
+function priceTag(s,m){ if(m==="ask")return`<span class="tag prov">호가</span>`; if(m==="kb")return`<span class="tag kb">KB·참고</span>`;
+  return s.verified?`<span class="tag real">실거래</span>`:`<span class="tag prov">API 교체예정</span>`; }
+const modeLabel=m=> m==="real"?"실거래 기준":m==="ask"?"현재 호가":"KB시세 일반가";
+
+const grid=document.getElementById("rankgrid"), smallwrap=document.getElementById("smallwrap");
+function renderRank(){
+  if(!CURRENT)return;
+  const rows=rank(STATE.basis), big=rows.slice(0,3), small=rows.slice(3);
+  grid.innerHTML=big.map((p,i)=>{ const {d,bp,total,sub}=p, s=bp.s;
+    return `<button class="card ${i===0?'top':''}" data-id="${d.id}">
+      <div class="seal"><div class="rank-n tnum">${i+1}</div></div>
+      <div class="cinfo"><p class="cname">${d.name} ${priceTag(s,STATE.mode)}</p>
+        <div class="cmeta"><b>${s.py}평</b> · ${d.brand} · ${d.year}년 · <b class="tnum">${d.households.toLocaleString()}</b>세대</div></div>
+      <div class="pricebox"><div class="price tnum">${won(priceOf(s,STATE.mode))}</div><div class="plabel">${modeLabel(STATE.mode)}</div></div>
+      <div class="scorewrap"><span class="lab">종합점수</span><span class="scorebar"><i style="width:${total.toFixed(1)}%"></i></span>
+        <span class="scorenum tnum">${total.toFixed(1)}<small> /100</small></span></div>
+      <div class="subline">시세 <b class="tnum">${sub.sise.toFixed(0)}</b> · 입지 <b class="tnum">${sub.ipji}</b> · 학군 <b class="tnum">${sub.hakgun}</b> · 신축 <b class="tnum">${sub.sinchuk.toFixed(0)}</b> · 규모 <b class="tnum">${sub.gyumo.toFixed(0)}</b></div>
+    </button>`; }).join("");
+  grid.querySelectorAll(".card").forEach(c=>c.onclick=()=>openDetail(c.dataset.id));
+  smallwrap.innerHTML = small.length ? `<div class="tierlabel">4~${3+small.length}위</div>
+    <div class="smalllist">${small.map((p,i)=>{ const {d,bp,total}=p, s=bp.s;
+      return `<button class="srow" data-id="${d.id}"><span class="sn tnum">${i+4}</span>
+        <span><span class="snm">${d.name}</span><br><span class="smeta">${s.py}평 · ${d.year}년 · ${d.households.toLocaleString()}세대</span></span>
+        <span class="sp tnum">${won(priceOf(s,STATE.mode))}</span>
+        <span class="ss"><span class="n tnum">${total.toFixed(1)}</span><small>종합</small></span></button>`; }).join("")}</div>` : "";
+  smallwrap.querySelectorAll(".srow").forEach(c=>c.onclick=()=>openDetail(c.dataset.id));
+}
+
+/* ---------- 동향 ---------- */
+function renderRegion(R){
+  const cls=v=>v>0?"badge-up":v<0?"badge-down":"badge-flat", sign=v=>v>0?"+"+v:""+v;
+  document.getElementById("strip").innerHTML=`
+    <div class="cell"><div class="k">체감 온도</div><div class="v badge-flat">${R.temp}</div></div>
+    <div class="cell"><div class="k">가격 추세 · 3개월</div><div class="v tnum ${cls(R.m3)}">${sign(R.m3)}%</div></div>
+    <div class="cell"><div class="k">거래량 추세</div><div class="v tnum ${cls(R.vol)}">${sign(R.vol)}%</div></div>
+    <div class="cell"><div class="k">리딩 단지</div><div class="v sm">${R.leader}</div></div>`;
+  document.getElementById("stripnote").textContent=R.note||"";
+}
+
+/* ---------- 상세 ---------- */
+const drawer=document.getElementById("drawer"), scrim=document.getElementById("scrim");
+let curId=null, curPy=null;
+function openDetail(id){ curId=id; curPy=null;
+  const d=CURRENT.apts.find(x=>x.id===id);
+  document.getElementById("d-name").textContent=d.name;
+  document.getElementById("d-sub").textContent=`${d.brand} · ${d.year}년 준공 · ${d.households.toLocaleString()}세대 · 최고 ${d.floors}층`;
+  drawer.classList.add("on"); scrim.classList.add("on"); drawer.setAttribute("aria-hidden","false"); renderDetail();
+}
+function closeDetail(){ drawer.classList.remove("on"); scrim.classList.remove("on"); drawer.setAttribute("aria-hidden","true"); }
+document.getElementById("xbtn").onclick=closeDetail; scrim.onclick=closeDetail;
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeDetail(); });
+function renderDetail(){
+  const d=CURRENT.apts.find(x=>x.id===curId);
+  const r=rank(STATE.basis).find(p=>p.d.id===curId);
+  const sel=curPy!=null?d.sizes.find(s=>s.py===curPy):(r?r.bp.s:d.sizes[0]); curPy=sel.py;
+  const mapURL=`https://map.kakao.com/?q=${encodeURIComponent(CURRENT.dong+" "+d.name)}`;
+  const brk=r?`<div class="sect"><h3>종합점수 분해 · ${STATE.basis==="p84"?"84㎡":"면적무제한"} 기준</h3><div class="brk">
+    ${[["시세","sise"],["입지","ipji"],["학군","hakgun"],["신축","sinchuk"],["규모","gyumo"]].map(([lab,k])=>`
+      <div class="brkrow"><span class="bl">${lab} <span class="wlabel">·${WEIGHTS[k]}%</span></span>
+        <span class="brktrack"><i style="width:${r.sub[k].toFixed(0)}%"></i></span><span class="bv tnum">${r.sub[k].toFixed(0)}</span></div>`).join("")}
+    <div class="brkrow" style="margin-top:4px;border-top:1px solid var(--line-soft);padding-top:9px">
+      <span class="bl" style="color:var(--brass);font-weight:700">종합</span><span></span>
+      <span class="bv tnum" style="color:var(--brass);font-size:15px">${r.total.toFixed(1)}</span></div></div></div>`:"";
+  document.getElementById("d-body").innerHTML=`
+    <div class="sect"><h3>단지 스펙</h3><div class="specgrid">
+      <div class="spec"><div class="k">준공</div><div class="v tnum">${d.year}년</div></div>
+      <div class="spec"><div class="k">세대수</div><div class="v tnum">${d.households.toLocaleString()}세대</div></div>
+      <div class="spec"><div class="k">브랜드</div><div class="v">${d.brand}</div></div>
+      <div class="spec"><div class="k">최고층</div><div class="v tnum">${d.floors}층</div></div></div></div>
+    <div class="sect"><h3>시세</h3>
+      <div class="pyeong">${d.sizes.map(s=>`<button class="pbtn" data-py="${s.py}" aria-selected="${s.py===curPy}">${s.py}평</button>`).join("")}</div>
+      <div class="pricepanel"><div><div class="big tnum">${won(priceOf(sel,STATE.mode))}</div>
+        <div style="font-size:12px;color:var(--mut);margin-top:3px">${priceTag(sel,STATE.mode)} · ${sel.m2}㎡ · ${modeLabel(STATE.mode)}</div></div>
+        <div class="side">실거래 <b class="tnum">${sel.real}억</b><br>호가 <b class="tnum">${sel.ask}억</b><br>KB <b class="tnum">${sel.kb}억</b></div></div>
+      <p class="narr">${d.desc.sise}</p></div>
+    <div class="sect"><h3>입지</h3><div class="loclist">
+      <div class="loc"><span class="ico">🚇</span><span><span class="lt">교통 </span><span class="lv">${d.transit}</span></span></div>
+      <div class="loc"><span class="ico">🛍️</span><span><span class="lt">상권 </span><span class="lv">${d.mart}</span></span></div></div>
+      <p class="narr">${d.desc.ipji}</p><a class="maplink" href="${mapURL}" target="_blank" rel="noopener">지도에서 위치·주변 보기 ↗</a></div>
+    <div class="sect"><h3>학군</h3><div class="loclist">
+      <div class="loc"><span class="ico">🎓</span><span><span class="lt">배정 </span><span class="lv">${d.school}</span></span></div></div>
+      <p class="narr">${d.desc.hakgun}</p></div>
+    <div class="sect"><h3>호재 · 리스크</h3><div class="chips">
+      ${d.hojae.map(h=>`<span class="chip pos">＋ ${h}</span>`).join("")}
+      ${d.risk.map(h=>`<span class="chip neg">− ${h}</span>`).join("")}</div></div>
+    ${brk}`;
+  document.querySelectorAll(".pbtn").forEach(b=>b.onclick=()=>{ curPy=+b.dataset.py; renderDetail(); });
+}
+
+/* ---------- API 연동 지점 (다음 단계: /api/trade 실거래로 교체) ---------- */
+async function fetchTrade(lawd, umd, months){
+  // const r = await (await fetch(`/api/trade?LAWD_CD=${lawd}&umd=${encodeURIComponent(umd)}&months=${months}`)).json();
+  // return r.summary;  // { 단지명: { 평형: {latest,max,count} } }
+  return null;
+}
+
+/* ---------- 컨트롤 ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected","false"));
+  t.setAttribute("aria-selected","true"); STATE.basis=t.dataset.basis; renderRank();
+  if(drawer.classList.contains("on")){ curPy=null; renderDetail(); }
+});
+document.querySelectorAll(".segbtn").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".segbtn").forEach(x=>x.setAttribute("aria-selected","false"));
+  b.setAttribute("aria-selected","true"); STATE.mode=b.dataset.mode;
+  renderRank(); if(drawer.classList.contains("on")) renderDetail();
+});
+document.getElementById("asof").textContent="기준 "+new Date().toLocaleDateString("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit"});
+init();
+</script>
+</body>
+</html>
