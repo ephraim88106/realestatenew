@@ -25,14 +25,14 @@
     { "name": "서구", "lawd": "28260",
       "dong": [
         { "name": "청라동", "slug": "cheongna", "live": false },
-        { "name": "검단동", "slug": "geomdan", "live": false }
+        { "name": "검단동", "slug": "geomdan", "live": true, "data": "data/incheon/seo/geomdan.json" }
       ] },
     { "name": "미추홀구", "lawd": "28177",
       "dong": [
         { "name": "용현동", "slug": "yonghyeon", "live": false },
         { "name": "주안동", "slug": "juan", "live": false }
       ] },
-    { "name": "계양구", "lawd": "28245", "dong": [ { "name": "작전동", "slug": "jakjeon", "live": false } ] },
+    { "name": "계양구", "lawd": "28245", "dong": [ { "name": "작전동", "slug": "jakjeon", "live": true, "data": "data/incheon/gyeyang/jakjeon.json" } ] },
     { "name": "중구", "lawd": "28110", "dong": [ { "name": "운서동", "slug": "unseo", "live": false } ] },
     { "name": "동구", "lawd": "28140", "dong": [ { "name": "송현동", "slug": "songhyeon", "live": false } ] }
   ]
