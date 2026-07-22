@@ -152,6 +152,7 @@ body{background:linear-gradient(0deg,rgba(8,27,36,.4),rgba(8,27,36,.4)),
     </div>
     <div class="coord">
       <div id="coord-loc"><b>—</b></div>
+      <div id="live-status" class="tnum" style="font-size:11px;margin-top:3px"></div>
       <div id="asof" class="tnum"></div>
     </div>
   </header>
@@ -237,11 +238,23 @@ function selectGu(gu){
 }
 async function loadDong(gu, dong){
   document.getElementById("coord-loc").innerHTML=`${gu.name} · <b>${dong.name}</b>`;
+  setLiveStatus("loading");
   try{ CURRENT = await (await fetch(dong.data,{cache:"no-cache"})).json(); }
-  catch(e){ renderEmpty(dong.name); return; }
+  catch(e){ renderEmpty(dong.name); setLiveStatus(""); return; }
   WEIGHTS = CURRENT.weights;
   renderRegion(CURRENT.region);
   renderRank();
+  // 국토부 실거래 API 병합
+  try{
+    const summary = await fetchTrade(gu.lawd, dong.name, 6);
+    if(summary && Object.keys(summary).length > 0){
+      mergeTrade(summary);
+      renderRank();
+      setLiveStatus("live");
+    } else {
+      setLiveStatus("");
+    }
+  } catch(e){ console.warn("실거래 API 오류:", e); setLiveStatus("error"); }
 }
 function renderEmpty(name){
   document.getElementById("strip").innerHTML="";
@@ -360,11 +373,37 @@ function renderDetail(){
   document.querySelectorAll(".pbtn").forEach(b=>b.onclick=()=>{ curPy=+b.dataset.py; renderDetail(); });
 }
 
-/* ---------- API 연동 지점 (다음 단계: /api/trade 실거래로 교체) ---------- */
+/* ---------- API 연동: 국토부 실거래 프록시 ---------- */
 async function fetchTrade(lawd, umd, months){
-  // const r = await (await fetch(`/api/trade?LAWD_CD=${lawd}&umd=${encodeURIComponent(umd)}&months=${months}`)).json();
-  // return r.summary;  // { 단지명: { 평형: {latest,max,count} } }
-  return null;
+  const r = await (await fetch(`/api/trade?LAWD_CD=${lawd}&umd=${encodeURIComponent(umd)}&months=${months}`)).json();
+  return r.summary; // { 단지명: { 평형(py): {latest,max,count,latestDate} } }
+}
+
+/* 실거래 데이터 → 정적 JSON 병합 */
+function mergeTrade(summary){
+  CURRENT.apts.forEach(d=>{
+    // 단지명 부분 매칭 (공백·브랜드 포함 이름 처리)
+    const matchKey = Object.keys(summary).find(k=>
+      d.name.replace(/\s/g,"").includes(k.replace(/\s/g,"")) ||
+      k.replace(/\s/g,"").includes(d.name.replace(/\s/g,""))
+    );
+    if(!matchKey) return;
+    const sizes = summary[matchKey];
+    d.sizes.forEach(s=>{
+      const t = sizes[s.py];
+      if(t && t.latest){ s.real = t.latest; s.verified = true; }
+    });
+  });
+}
+
+/* 실거래 연동 상태 표시 */
+function setLiveStatus(state){
+  const el = document.getElementById("live-status");
+  if(!el) return;
+  if(state==="loading") el.innerHTML='<span style="color:var(--mut)">⟳ 실거래 조회 중…</span>';
+  else if(state==="live") el.innerHTML='<span style="color:var(--teal)">● Live 국토부 연동</span>';
+  else if(state==="error") el.innerHTML='<span style="color:var(--warn)">⚠ 실거래 API 오류</span>';
+  else el.innerHTML='';
 }
 
 /* ---------- 컨트롤 ---------- */
