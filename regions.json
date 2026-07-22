@@ -22,10 +22,12 @@
         { "name": "부평동", "slug": "bupyeong", "live": false },
         { "name": "삼산동", "slug": "samsan", "live": false }
       ] },
-    { "name": "서구", "lawd": "28260",
+    { "name": "서해구", "lawd": "28260",
       "dong": [
         { "name": "청라동", "slug": "cheongna", "live": false },
-        { "name": "검단신도시·아라동·원당동", "slug": "geomdan", "live": true, "data": "data/incheon/seo/geomdan.json" }
+        { "name": "검단신도시", "slug": "geomdan", "live": true, "data": "data/incheon/seo/geomdan.json" },
+        { "name": "아라동", "slug": "ara", "live": true, "data": "data/incheon/seo/ara.json" },
+        { "name": "원당동", "slug": "wondang", "live": true, "data": "data/incheon/seo/wondang.json" }
       ] },
     { "name": "미추홀구", "lawd": "28177",
       "dong": [
