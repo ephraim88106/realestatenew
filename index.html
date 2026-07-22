@@ -246,7 +246,7 @@ async function loadDong(gu, dong){
   renderRank();
   // 국토부 실거래 API 병합
   try{
-    const summary = await fetchTrade(gu.lawd, dong.name, 6);
+    const summary = await fetchTrade(gu.lawd, "", 6);
     if(summary && Object.keys(summary).length > 0){
       mergeTrade(summary);
       renderRank();
