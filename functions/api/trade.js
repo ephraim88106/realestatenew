@@ -81,8 +81,9 @@ async function fetchMonth(key, lawd, ym) {
 function parseItems(xml, ym) {
   const out = [];
   for (const b of (xml.match(/<item>[\s\S]*?<\/item>/g) || [])) {
+    const inner = b.slice(6, -7); // "<item>"(6자)/"</item>"(7자) 제거 — 안 지우면 바깥 <item> 태그를 통째로 매칭해버려서 내부 필드(aptNm 등)를 못 읽는 버그가 있었음
     const o = {};
-    for (const m of b.matchAll(/<([^/>]+)>([\s\S]*?)<\/\1>/g)) o[m[1].trim()] = m[2].trim();
+    for (const m of inner.matchAll(/<([^/>]+)>([\s\S]*?)<\/\1>/g)) o[m[1].trim()] = m[2].trim();
     const g = (...ks) => { for (const k of ks) if (o[k] != null && o[k] !== "") return o[k]; return ""; };
     const amt = Number(g("dealAmount", "거래금액").replace(/[,\s]/g, "")) || 0;
     const area = Number(g("excluUseAr", "전용면적")) || 0;
