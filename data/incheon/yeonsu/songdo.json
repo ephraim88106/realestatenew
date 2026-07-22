@@ -72,6 +72,14 @@
       "hakgun": 80,
       "sizes": [
         {
+          "py": 23,
+          "m2": 60,
+          "real": 8.54,
+          "ask": 9.14,
+          "kb": 8.2,
+          "verified": false
+        },
+        {
           "py": 34,
           "m2": 85,
           "real": 10.71,
