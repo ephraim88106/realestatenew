@@ -33,7 +33,13 @@ export async function onRequest(context) {
   const cache = caches.default;
   const cacheKey = new Request(url.toString(), req);
   const hit = await cache.match(cacheKey);
-  if (hit) return hit;
+  if (hit) {
+    // 빈 결과 캐시는 무시 (count:0 인 stale 캐시 방지)
+    try {
+      const cached = await hit.clone().json();
+      if (cached.count > 0) return hit;
+    } catch { return hit; }
+  }
 
   if (!env.MOLIT_KEY)
     return json({ error: "MOLIT_KEY 미설정 · Pages Settings › Environment variables 에 등록" }, 500);
@@ -50,8 +56,11 @@ export async function onRequest(context) {
       summary: summarize(cleaned),
       items: cleaned,
     });
-    res.headers.set("Cache-Control", `public, max-age=${CACHE_TTL}`);
-    context.waitUntil(cache.put(cacheKey, res.clone()));
+    // 결과가 있을 때만 캐시 저장 (빈 결과 캐시 방지)
+    if (cleaned.length > 0) {
+      res.headers.set("Cache-Control", `public, max-age=${CACHE_TTL}`);
+      context.waitUntil(cache.put(cacheKey, res.clone()));
+    }
     return res;
   } catch (e) {
     return json({ error: String((e && e.message) || e) }, 502);
@@ -60,7 +69,7 @@ export async function onRequest(context) {
 
 async function fetchMonth(key, lawd, ym) {
   const q = new URLSearchParams({ serviceKey: key, LAWD_CD: lawd, DEAL_YMD: ym, numOfRows: "1000", pageNo: "1" });
-  const r = await fetch(`${MOLIT}?${q}`, { cf: { cacheTtl: 21600, cacheEverything: true } });
+  const r = await fetch(`${MOLIT}?${q}`);
   const xml = await r.text();
   if (/<returnReasonCode>/.test(xml) && !/<items>/.test(xml)) {
     const code = pick(xml, "returnReasonCode"), msg = pick(xml, "returnAuthMsg") || pick(xml, "errMsg");
