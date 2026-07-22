@@ -389,7 +389,10 @@ function mergeTrade(summary){
     if(!matchKey) return;
     const sizes = summary[matchKey];
     d.sizes.forEach(s=>{
-      const t = sizes[s.py];
+      // m2(㎡) 기준 ±10㎡ 허용 퍼지 매칭
+      const m2key = Object.keys(sizes).find(k => Math.abs(Number(k) - s.m2) <= 10);
+      if(!m2key) return;
+      const t = sizes[m2key];
       if(t && t.latest){ s.real = t.latest; s.verified = true; }
     });
   });

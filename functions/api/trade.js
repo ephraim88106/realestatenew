@@ -107,7 +107,8 @@ function summarize(items) {
   const s = {};
   for (const x of items) {
     const a = (s[x.apt] ||= {});
-    const g = (a[x.py] ||= { latest: null, latestDate: "", max: 0, count: 0 });
+    const m2key = Math.round(x.area); // ㎡ 기준 키 (py 대신)
+    const g = (a[m2key] ||= { latest: null, latestDate: "", max: 0, count: 0 });
     g.count++;
     if (x.amountEok > g.max) g.max = x.amountEok;
     if (x.date > g.latestDate) { g.latestDate = x.date; g.latest = x.amountEok; }
