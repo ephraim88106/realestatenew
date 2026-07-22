@@ -356,7 +356,14 @@ function renderDetail(){
       <div class="pyeong">${d.sizes.map(s=>`<button class="pbtn" data-py="${s.py}" aria-selected="${s.py===curPy}">${s.py}평</button>`).join("")}</div>
       <div class="pricepanel"><div><div class="big tnum">${won(priceOf(sel,STATE.mode))}</div>
         <div style="font-size:12px;color:var(--mut);margin-top:3px">${priceTag(sel,STATE.mode)} · ${sel.m2}㎡ · ${modeLabel(STATE.mode)}</div></div>
-        <div class="side">실거래 <b class="tnum">${sel.real}억</b><br>호가 <b class="tnum">${sel.ask}억</b><br>KB <b class="tnum">${sel.kb}억</b></div></div>
+        <div class="side">${(()=>{
+          const gap = Math.round((sel.ask - sel.real)*10)/10;
+          const gapSign = gap > 0 ? `+${gap}` : `${gap}`;
+          const gapColor = gap > 0 ? 'var(--up)' : gap < 0 ? 'var(--down)' : 'var(--mut)';
+          return `<span style="color:var(--mut);font-size:10px">실거래</span> <b class="tnum">${sel.real}억</b><br>
+            <span style="color:var(--mut);font-size:10px">호가</span> <b class="tnum">${sel.ask}억</b> <span style="font-size:10px;color:${gapColor}">${gapSign}억</span><br>
+            <span style="color:var(--mut);font-size:10px">KB시세</span> <b class="tnum">${sel.kb}억</b>`;
+        })()}</div></div>
       <p class="narr">${d.desc.sise}</p></div>
     <div class="sect"><h3>입지</h3><div class="loclist">
       <div class="loc"><span class="ico">🚇</span><span><span class="lt">교통 </span><span class="lv">${d.transit}</span></span></div>
