@@ -136,6 +136,14 @@ body{background:linear-gradient(0deg,rgba(8,27,36,.4),rgba(8,27,36,.4)),
 </style>
 </head>
 <body>
+<!-- 카카오 광고 -->
+<div style="text-align:center;background:#081b24;padding:6px 0;">
+<ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-ws66jC0sybzdzPgC"
+data-ad-width = "728"
+data-ad-height = "90"></ins>
+</div>
+<script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
 <div class="wrap">
   <header class="mast">
     <div class="brandmark">
@@ -431,5 +439,17 @@ document.querySelectorAll(".segbtn").forEach(b=>b.onclick=()=>{
 document.getElementById("asof").textContent="기준 "+new Date().toLocaleDateString("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit"});
 init();
 </script>
+
+<!-- 카카오 우측 사이드 광고 (160×600, 뷰포트 충분할 때만 표시) -->
+<div id="ad-side" style="position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:200;">
+<ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-JfSdnb3QZj43ljzX"
+data-ad-width = "160"
+data-ad-height = "600"></ins>
+</div>
+<style>
+#ad-side{display:none}
+@media(min-width:1200px){#ad-side{display:block}}
+</style>
 </body>
 </html>
