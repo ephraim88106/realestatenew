@@ -589,6 +589,7 @@ function renderPostList(r){
 function fmtDate(iso){ const d=new Date(iso); return d.toLocaleDateString("ko-KR",{year:"2-digit",month:"2-digit",day:"2-digit"}); }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 async function openPost(id){
+  history.pushState({boardPost:id}, "", location.pathname+location.search);
   const detailEl=document.getElementById("boarddetailview");
   detailEl.innerHTML=`<div class="boardempty">불러오는 중…</div>`;
   showBoardDetail();
@@ -596,6 +597,13 @@ async function openPost(id){
   if(r.error){ detailEl.innerHTML=`<div class="boardempty">${escapeHtml(r.error)}</div>`; return; }
   renderPostDetail(r.post);
 }
+/* 게시글 상세를 볼 때 히스토리를 남겨서, 브라우저 뒤로가기를 누르면
+   페이지를 벗어나지 않고 게시판 목록으로 돌아오도록 함 */
+window.addEventListener("popstate", ()=>{
+  if(document.getElementById("boarddetailview").style.display!=="none"){
+    showBoardList(); loadBoardList(BOARD_PAGE);
+  }
+});
 function renderPostDetail(post){
   document.getElementById("boarddetailview").innerHTML=`
     <div class="postdetail">
@@ -608,7 +616,7 @@ function renderPostDetail(post){
         <button class="btn warn" id="pd-del">삭제</button>
       </div>
     </div>`;
-  document.getElementById("pd-back").onclick=()=>{ showBoardList(); loadBoardList(BOARD_PAGE); };
+  document.getElementById("pd-back").onclick=()=>{ history.back(); };
   document.getElementById("pd-edit").onclick=()=>openEditForm(post);
   document.getElementById("pd-del").onclick=()=>deletePost(post.id);
 }
