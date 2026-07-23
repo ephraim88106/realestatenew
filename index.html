@@ -547,17 +547,28 @@ function showBoardDetail(){
   document.getElementById("boardwriteview").style.display="none";
   document.getElementById("boarddetailview").style.display="";
 }
+/* 서버 내부 오류(5xx)는 사용자에게 원문을 노출하지 않고 콘솔에만 기록,
+   사용자에게는 항상 안내 문구만 보여줌. 입력값 오류(4xx)는 그대로 전달. */
+async function boardApi(url, opts){
+  try{
+    const res = await fetch(url, opts);
+    let data; try{ data = await res.json(); }catch{ data = {}; }
+    if(!res.ok){
+      if(res.status>=500){ console.error("board api error", res.status, data.error); return {error:"게시판을 잠시 이용할 수 없어요. 잠시 후 다시 시도해주세요."}; }
+      return {error: data.error || "요청을 처리하지 못했어요."};
+    }
+    return data;
+  }catch(e){ console.error("board api network error", e); return {error:"네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요."}; }
+}
 async function loadBoardList(page){
   if(!CURRENT_DONG) return;
   BOARD_PAGE=page;
   document.getElementById("board-h2").textContent = `${CURRENT_DONG.name} 게시판`;
   const listEl=document.getElementById("postlist");
   listEl.innerHTML=`<div class="boardempty">불러오는 중…</div>`;
-  try{
-    const r = await (await fetch(`/api/board?dong=${CURRENT_DONG.slug}&page=${page}`)).json();
-    if(r.error){ listEl.innerHTML=`<div class="boardempty">${escapeHtml(r.error)}</div>`; document.getElementById("pager").innerHTML=""; return; }
-    renderPostList(r);
-  }catch(e){ listEl.innerHTML=`<div class="boardempty">게시판을 불러오지 못했어요.</div>`; }
+  const r = await boardApi(`/api/board?dong=${CURRENT_DONG.slug}&page=${page}`);
+  if(r.error){ listEl.innerHTML=`<div class="boardempty">${escapeHtml(r.error)}</div>`; document.getElementById("pager").innerHTML=""; return; }
+  renderPostList(r);
 }
 function renderPostList(r){
   const listEl=document.getElementById("postlist");
@@ -581,11 +592,9 @@ async function openPost(id){
   const detailEl=document.getElementById("boarddetailview");
   detailEl.innerHTML=`<div class="boardempty">불러오는 중…</div>`;
   showBoardDetail();
-  try{
-    const r = await (await fetch(`/api/board?dong=${CURRENT_DONG.slug}&id=${id}`)).json();
-    if(r.error){ detailEl.innerHTML=`<div class="boardempty">${escapeHtml(r.error)}</div>`; return; }
-    renderPostDetail(r.post);
-  }catch(e){ detailEl.innerHTML=`<div class="boardempty">글을 불러오지 못했어요.</div>`; }
+  const r = await boardApi(`/api/board?dong=${CURRENT_DONG.slug}&id=${id}`);
+  if(r.error){ detailEl.innerHTML=`<div class="boardempty">${escapeHtml(r.error)}</div>`; return; }
+  renderPostDetail(r.post);
 }
 function renderPostDetail(post){
   document.getElementById("boarddetailview").innerHTML=`
@@ -625,28 +634,22 @@ async function submitWrite(){
   const website=document.getElementById("w-website").value;
   if(EDIT_ID){
     if(!title||!content||!password){ err.textContent="제목·내용·비밀번호를 입력해주세요."; err.style.display=""; return; }
-    try{
-      const r = await (await fetch(`/api/board?id=${EDIT_ID}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,content,password})})).json();
-      if(r.error){ err.textContent=r.error; err.style.display=""; return; }
-      showBoardList(); loadBoardList(BOARD_PAGE);
-    }catch(e){ err.textContent="수정에 실패했어요."; err.style.display=""; }
+    const r = await boardApi(`/api/board?id=${EDIT_ID}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,content,password})});
+    if(r.error){ err.textContent=r.error; err.style.display=""; return; }
+    showBoardList(); loadBoardList(BOARD_PAGE);
     return;
   }
   if(!title||!author||!password||!content){ err.textContent="모든 항목을 입력해주세요."; err.style.display=""; return; }
-  try{
-    const r = await (await fetch(`/api/board`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({dong:CURRENT_DONG.slug,title,author,password,content,website})})).json();
-    if(r.error){ err.textContent=r.error; err.style.display=""; return; }
-    showBoardList(); loadBoardList(1);
-  }catch(e){ err.textContent="등록에 실패했어요."; err.style.display=""; }
+  const r = await boardApi(`/api/board`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({dong:CURRENT_DONG.slug,title,author,password,content,website})});
+  if(r.error){ err.textContent=r.error; err.style.display=""; return; }
+  showBoardList(); loadBoardList(1);
 }
 async function deletePost(id){
   const password = prompt("비밀번호를 입력하세요");
   if(password==null) return;
-  try{
-    const r = await (await fetch(`/api/board?id=${id}`,{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})})).json();
-    if(r.error){ alert(r.error); return; }
-    showBoardList(); loadBoardList(BOARD_PAGE);
-  }catch(e){ alert("삭제에 실패했어요."); }
+  const r = await boardApi(`/api/board?id=${id}`,{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});
+  if(r.error){ alert(r.error); return; }
+  showBoardList(); loadBoardList(BOARD_PAGE);
 }
 
 init();
