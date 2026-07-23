@@ -1,8 +1,8 @@
 /* ============================================================
  * Pages Function: /api/board  ← 동별 자유게시판 (익명 + 비밀번호)
  * ------------------------------------------------------------
- * D1 바인딩 필요: Cloudflare Pages 대시보드 › Settings › Bindings ›
- *   Add › D1 database bindings › Variable name = DB, Database = realestatenew-board
+ * D1 바인딩 완료(2026-07-23): Cloudflare Pages 대시보드 › Settings › Bindings ›
+ *   D1 database › Variable name = DB, Database = realestatenew-board (재배포 트리거용 주석)
  * 호출:
  *   GET    /api/board?dong=songdo&page=1        (목록, 20개씩)
  *   GET    /api/board?dong=songdo&id=12          (상세, 조회수 +1)
