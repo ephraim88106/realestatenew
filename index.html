@@ -133,6 +133,36 @@ body{background:linear-gradient(0deg,rgba(8,27,36,.4),rgba(8,27,36,.4)),
 .maplink:hover{background:rgba(47,185,166,.1)}
 .disc{font-size:11px;color:var(--mut-2);line-height:1.7;border-top:1px solid var(--line-soft);margin-top:34px;padding-top:14px}
 .disc code{color:var(--teal);background:var(--ink-2);padding:1px 5px;border-radius:4px;font-size:11px}
+.viewtabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:2px}
+.viewtab{border:none;background:none;color:var(--mut);font:inherit;font-weight:700;font-size:14px;padding:9px 4px;margin-right:16px;cursor:pointer;border-bottom:2px solid transparent}
+.viewtab[aria-selected="true"]{color:var(--paper);border-bottom-color:var(--brass)}
+.boardhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}
+.boardhead h2{font-size:17px;margin:0}
+.btn{border:1px solid var(--teal-dim);background:var(--teal);color:#04211c;font:inherit;font-weight:700;font-size:13px;padding:9px 16px;border-radius:9px;cursor:pointer}
+.btn:hover{background:var(--teal-dim);color:var(--paper)}
+.btn.ghost{background:none;color:var(--mut);border-color:var(--line)}
+.btn.ghost:hover{color:var(--paper);border-color:var(--teal-dim)}
+.btn.warn{background:none;color:var(--warn);border-color:var(--warn)}
+.postlist{display:flex;flex-direction:column;border-top:1px solid var(--line-soft)}
+.postrow{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid var(--line-soft);background:none;border-left:none;border-right:none;border-top:none;color:inherit;font:inherit;text-align:left;cursor:pointer;width:100%}
+.postrow:hover .ptitle{color:var(--teal)}
+.ptitle{font-size:14px;font-weight:600}
+.pmeta{font-size:11px;color:var(--mut-2)}
+.pviews{font-size:11px;color:var(--mut-2);white-space:nowrap}
+.boardempty{padding:40px 4px;text-align:center;color:var(--mut);font-size:13px}
+.pager{display:flex;justify-content:center;gap:6px;margin-top:16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;color:var(--mut);margin-bottom:5px;font-weight:600}
+.field input,.field textarea{width:100%;background:var(--ink-2);border:1px solid var(--line);border-radius:9px;color:var(--paper);font:inherit;font-size:14px;padding:10px 12px}
+.field textarea{resize:vertical;min-height:140px}
+.field.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field .website{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.formfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.postdetail{border-top:1px solid var(--line-soft);padding-top:14px}
+.postdetail .pd-title{font-size:18px;font-weight:700;margin:0 0 6px}
+.postdetail .pd-meta{font-size:12px;color:var(--mut-2);margin-bottom:16px}
+.postdetail .pd-body{font-size:14px;line-height:1.8;white-space:pre-wrap;margin-bottom:20px}
+.boarderr{color:var(--warn);font-size:12px;margin-top:8px}
 @media(max-width:640px){
   .strip{grid-template-columns:1fr 1fr}
   .card{grid-template-columns:44px 1fr;grid-template-areas:"s n" "s p"}
@@ -178,40 +208,77 @@ data-ad-height = "90"></ins>
     <div class="navrow" id="dongNav" aria-label="동 선택"></div>
   </div>
 
-  <section aria-label="시장 동향">
-    <div class="striphead">
-      <span class="eyebrow2">동별 시장 동향</span>
-      <span class="src">출처 · KB부동산 · 한국부동산원 지역통계 (합법·무료)</span>
-    </div>
-    <div class="strip" id="strip"></div>
-    <p class="stripnote" id="stripnote"></p>
-  </section>
-
-  <div class="controls">
-    <div class="tabs" role="tablist" aria-label="면적 기준">
-      <button class="tab" role="tab" aria-selected="true" data-basis="p84">84㎡ 기준</button>
-      <button class="tab" role="tab" aria-selected="false" data-basis="max">면적 무제한</button>
-    </div>
-    <div class="pricetog">가격 표기
-      <div class="seg" id="seg" role="tablist" aria-label="가격 표기 기준">
-        <button class="segbtn" data-mode="real" aria-selected="true">실거래</button>
-        <button class="segbtn" data-mode="ask" aria-selected="false">호가</button>
-        <button class="segbtn" data-mode="kb" aria-selected="false">KB시세</button>
-      </div>
-    </div>
+  <div class="viewtabs" role="tablist" aria-label="화면 선택">
+    <button class="viewtab" role="tab" data-view="rank" aria-selected="true">랭킹</button>
+    <button class="viewtab" role="tab" data-view="board" aria-selected="false">게시판</button>
   </div>
 
-  <div class="rankgrid" id="rankgrid"></div>
-  <div id="smallwrap"></div>
+  <div id="rankview">
+    <section aria-label="시장 동향">
+      <div class="striphead">
+        <span class="eyebrow2">동별 시장 동향</span>
+        <span class="src">출처 · KB부동산 · 한국부동산원 지역통계 (합법·무료)</span>
+      </div>
+      <div class="strip" id="strip"></div>
+      <p class="stripnote" id="stripnote"></p>
+    </section>
 
-  <p class="disc">
-    <b>시세 3종</b> —
-    <span class="tag real" style="display:inline-block">실거래</span> 국토부 신고가 (계약일 기준, 30일 내 신고 의무) ·
-    <span class="tag prov" style="display:inline-block">호가</span> 현재 플랫폼 매물가 (실거래 대비 갭이 클수록 협상 여지 있음) ·
-    <span class="tag kb" style="display:inline-block">KB·참고</span> KB국민은행 시세 (담보대출 기준가로 실제 활용됨).
-    동향은 KB부동산·한국부동산원 지역통계 기준.
-    <b>종합점수</b>는 시세 45 · 입지 20 · 학군 15 · 신축 10 · 규모 10 가중 합산이며, 순위는 실거래가 기준입니다.
-  </p>
+    <div class="controls">
+      <div class="tabs" role="tablist" aria-label="면적 기준">
+        <button class="tab" role="tab" aria-selected="true" data-basis="p84">84㎡ 기준</button>
+        <button class="tab" role="tab" aria-selected="false" data-basis="max">면적 무제한</button>
+      </div>
+      <div class="pricetog">가격 표기
+        <div class="seg" id="seg" role="tablist" aria-label="가격 표기 기준">
+          <button class="segbtn" data-mode="real" aria-selected="true">실거래</button>
+          <button class="segbtn" data-mode="ask" aria-selected="false">호가</button>
+          <button class="segbtn" data-mode="kb" aria-selected="false">KB시세</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rankgrid" id="rankgrid"></div>
+    <div id="smallwrap"></div>
+
+    <p class="disc">
+      <b>시세 3종</b> —
+      <span class="tag real" style="display:inline-block">실거래</span> 국토부 신고가 (계약일 기준, 30일 내 신고 의무) ·
+      <span class="tag prov" style="display:inline-block">호가</span> 현재 플랫폼 매물가 (실거래 대비 갭이 클수록 협상 여지 있음) ·
+      <span class="tag kb" style="display:inline-block">KB·참고</span> KB국민은행 시세 (담보대출 기준가로 실제 활용됨).
+      동향은 KB부동산·한국부동산원 지역통계 기준.
+      <b>종합점수</b>는 시세 45 · 입지 20 · 학군 15 · 신축 10 · 규모 10 가중 합산이며, 순위는 실거래가 기준입니다.
+    </p>
+  </div>
+
+  <div id="boardview" style="display:none">
+    <div id="boardlistview">
+      <div class="boardhead">
+        <h2 id="board-h2">게시판</h2>
+        <button class="btn" id="writeBtn">글쓰기</button>
+      </div>
+      <div class="postlist" id="postlist"></div>
+      <div class="pager" id="pager"></div>
+    </div>
+
+    <div id="boardwriteview" style="display:none">
+      <div class="boardhead"><h2>글쓰기</h2></div>
+      <div class="field row2">
+        <div><label>닉네임</label><input id="w-author" maxlength="20" placeholder="닉네임"></div>
+        <div><label>비밀번호</label><input id="w-password" type="password" maxlength="30" placeholder="수정·삭제할 때 필요해요"></div>
+      </div>
+      <div class="field"><label>제목</label><input id="w-title" maxlength="100" placeholder="제목"></div>
+      <div class="field"><label>내용</label><textarea id="w-content" maxlength="4000" placeholder="내용을 입력하세요"></textarea></div>
+      <div class="field website"><label>website</label><input id="w-website" tabindex="-1" autocomplete="off"></div>
+      <p class="boarderr" id="w-err" style="display:none"></p>
+      <div class="formfoot">
+        <button class="btn ghost" id="writeCancelBtn">취소</button>
+        <button class="btn" id="writeSubmitBtn">등록</button>
+      </div>
+    </div>
+
+    <div id="boarddetailview" style="display:none"></div>
+  </div>
+
   <p class="disc">운영자: 에브라임 시드(Ephraim Seed)</p>
 </div>
 
@@ -223,8 +290,8 @@ data-ad-height = "90"></ins>
 </aside>
 
 <script>
-let REGIONS=null, CURRENT=null, WEIGHTS=null;
-let STATE={basis:"p84", mode:"real"};
+let REGIONS=null, CURRENT=null, WEIGHTS=null, CURRENT_DONG=null;
+let STATE={basis:"p84", mode:"real", view:"rank"};
 
 /* ---------- 데이터 로드 ---------- */
 async function init(){
@@ -255,6 +322,7 @@ function selectGu(gu){
   } else { CURRENT=null; renderEmpty(gu.name); }
 }
 async function loadDong(gu, dong){
+  CURRENT_DONG = dong;
   document.getElementById("coord-loc").innerHTML=`${gu.name} · <b>${dong.name}</b>`;
   setLiveStatus("loading");
   try{ CURRENT = await (await fetch(dong.data,{cache:"no-cache"})).json(); }
@@ -262,6 +330,7 @@ async function loadDong(gu, dong){
   WEIGHTS = CURRENT.weights;
   renderRegion(CURRENT.region);
   renderRank();
+  if(STATE.view==="board"){ showBoardList(); loadBoardList(1); }
   // 국토부 실거래 API 병합
   try{
     const summary = await fetchTrade(gu.lawd, "", 6);
@@ -446,6 +515,140 @@ document.querySelectorAll(".segbtn").forEach(b=>b.onclick=()=>{
   renderRank(); if(drawer.classList.contains("on")) renderDetail();
 });
 document.getElementById("asof").textContent="기준 "+new Date().toLocaleDateString("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit"});
+
+/* ---------- 게시판 ---------- */
+let BOARD_PAGE=1, EDIT_ID=null;
+document.querySelectorAll(".viewtab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".viewtab").forEach(x=>x.setAttribute("aria-selected","false"));
+  t.setAttribute("aria-selected","true");
+  STATE.view=t.dataset.view;
+  document.getElementById("rankview").style.display = STATE.view==="rank" ? "" : "none";
+  document.getElementById("boardview").style.display = STATE.view==="board" ? "" : "none";
+  if(STATE.view==="board"){ showBoardList(); loadBoardList(1); }
+});
+function showBoardList(){
+  document.getElementById("boardlistview").style.display="";
+  document.getElementById("boardwriteview").style.display="none";
+  document.getElementById("boarddetailview").style.display="none";
+}
+function showBoardWrite(){
+  document.getElementById("boardlistview").style.display="none";
+  document.getElementById("boardwriteview").style.display="";
+  document.getElementById("boarddetailview").style.display="none";
+  document.querySelector("#boardwriteview h2").textContent="글쓰기";
+  document.getElementById("w-title").value=""; document.getElementById("w-author").value="";
+  document.getElementById("w-author").disabled=false;
+  document.getElementById("w-password").value=""; document.getElementById("w-content").value="";
+  document.getElementById("w-website").value=""; document.getElementById("w-err").style.display="none";
+  EDIT_ID=null;
+}
+function showBoardDetail(){
+  document.getElementById("boardlistview").style.display="none";
+  document.getElementById("boardwriteview").style.display="none";
+  document.getElementById("boarddetailview").style.display="";
+}
+async function loadBoardList(page){
+  if(!CURRENT_DONG) return;
+  BOARD_PAGE=page;
+  document.getElementById("board-h2").textContent = `${CURRENT_DONG.name} 게시판`;
+  const listEl=document.getElementById("postlist");
+  listEl.innerHTML=`<div class="boardempty">불러오는 중…</div>`;
+  try{
+    const r = await (await fetch(`/api/board?dong=${CURRENT_DONG.slug}&page=${page}`)).json();
+    if(r.error){ listEl.innerHTML=`<div class="boardempty">${escapeHtml(r.error)}</div>`; document.getElementById("pager").innerHTML=""; return; }
+    renderPostList(r);
+  }catch(e){ listEl.innerHTML=`<div class="boardempty">게시판을 불러오지 못했어요.</div>`; }
+}
+function renderPostList(r){
+  const listEl=document.getElementById("postlist");
+  if(!r.posts.length){ listEl.innerHTML=`<div class="boardempty">아직 등록된 글이 없어요. 첫 글을 남겨보세요.</div>`; document.getElementById("pager").innerHTML=""; return; }
+  listEl.innerHTML = r.posts.map(p=>`
+    <button class="postrow" data-id="${p.id}">
+      <span><span class="ptitle">${escapeHtml(p.title)}</span><br>
+        <span class="pmeta">${escapeHtml(p.author)} · ${fmtDate(p.created_at)}</span></span>
+      <span class="pviews">조회 ${p.views}</span>
+    </button>`).join("");
+  listEl.querySelectorAll(".postrow").forEach(b=>b.onclick=()=>openPost(+b.dataset.id));
+  const totalPages = Math.max(1, Math.ceil(r.total / r.pageSize));
+  let pager="";
+  for(let i=1;i<=totalPages;i++) pager+=`<button class="chip-btn" data-p="${i}" aria-selected="${i===r.page}">${i}</button>`;
+  document.getElementById("pager").innerHTML = totalPages>1 ? pager : "";
+  document.querySelectorAll("#pager .chip-btn").forEach(b=>b.onclick=()=>loadBoardList(+b.dataset.p));
+}
+function fmtDate(iso){ const d=new Date(iso); return d.toLocaleDateString("ko-KR",{year:"2-digit",month:"2-digit",day:"2-digit"}); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+async function openPost(id){
+  const detailEl=document.getElementById("boarddetailview");
+  detailEl.innerHTML=`<div class="boardempty">불러오는 중…</div>`;
+  showBoardDetail();
+  try{
+    const r = await (await fetch(`/api/board?dong=${CURRENT_DONG.slug}&id=${id}`)).json();
+    if(r.error){ detailEl.innerHTML=`<div class="boardempty">${escapeHtml(r.error)}</div>`; return; }
+    renderPostDetail(r.post);
+  }catch(e){ detailEl.innerHTML=`<div class="boardempty">글을 불러오지 못했어요.</div>`; }
+}
+function renderPostDetail(post){
+  document.getElementById("boarddetailview").innerHTML=`
+    <div class="postdetail">
+      <p class="pd-title">${escapeHtml(post.title)}</p>
+      <p class="pd-meta">${escapeHtml(post.author)} · ${fmtDate(post.created_at)} · 조회 ${post.views}</p>
+      <p class="pd-body">${escapeHtml(post.content)}</p>
+      <div class="formfoot">
+        <button class="btn ghost" id="pd-back">목록으로</button>
+        <button class="btn ghost" id="pd-edit">수정</button>
+        <button class="btn warn" id="pd-del">삭제</button>
+      </div>
+    </div>`;
+  document.getElementById("pd-back").onclick=()=>{ showBoardList(); loadBoardList(BOARD_PAGE); };
+  document.getElementById("pd-edit").onclick=()=>openEditForm(post);
+  document.getElementById("pd-del").onclick=()=>deletePost(post.id);
+}
+document.getElementById("writeBtn").onclick=()=>showBoardWrite();
+document.getElementById("writeCancelBtn").onclick=()=>showBoardList();
+document.getElementById("writeSubmitBtn").onclick=()=>submitWrite();
+function openEditForm(post){
+  showBoardWrite();
+  EDIT_ID=post.id;
+  document.querySelector("#boardwriteview h2").textContent="수정";
+  document.getElementById("w-title").value=post.title;
+  document.getElementById("w-content").value=post.content;
+  document.getElementById("w-author").value=post.author;
+  document.getElementById("w-author").disabled=true;
+}
+async function submitWrite(){
+  const err=document.getElementById("w-err");
+  err.style.display="none";
+  const title=document.getElementById("w-title").value.trim();
+  const author=document.getElementById("w-author").value.trim();
+  const password=document.getElementById("w-password").value;
+  const content=document.getElementById("w-content").value.trim();
+  const website=document.getElementById("w-website").value;
+  if(EDIT_ID){
+    if(!title||!content||!password){ err.textContent="제목·내용·비밀번호를 입력해주세요."; err.style.display=""; return; }
+    try{
+      const r = await (await fetch(`/api/board?id=${EDIT_ID}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,content,password})})).json();
+      if(r.error){ err.textContent=r.error; err.style.display=""; return; }
+      showBoardList(); loadBoardList(BOARD_PAGE);
+    }catch(e){ err.textContent="수정에 실패했어요."; err.style.display=""; }
+    return;
+  }
+  if(!title||!author||!password||!content){ err.textContent="모든 항목을 입력해주세요."; err.style.display=""; return; }
+  try{
+    const r = await (await fetch(`/api/board`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({dong:CURRENT_DONG.slug,title,author,password,content,website})})).json();
+    if(r.error){ err.textContent=r.error; err.style.display=""; return; }
+    showBoardList(); loadBoardList(1);
+  }catch(e){ err.textContent="등록에 실패했어요."; err.style.display=""; }
+}
+async function deletePost(id){
+  const password = prompt("비밀번호를 입력하세요");
+  if(password==null) return;
+  try{
+    const r = await (await fetch(`/api/board?id=${id}`,{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})})).json();
+    if(r.error){ alert(r.error); return; }
+    showBoardList(); loadBoardList(BOARD_PAGE);
+  }catch(e){ alert("삭제에 실패했어요."); }
+}
+
 init();
 </script>
 
