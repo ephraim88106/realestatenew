@@ -163,8 +163,13 @@ body{background:linear-gradient(0deg,rgba(8,27,36,.4),rgba(8,27,36,.4)),
 .postdetail .pd-meta{font-size:12px;color:var(--mut-2);margin-bottom:16px}
 .postdetail .pd-body{font-size:14px;line-height:1.8;white-space:pre-wrap;margin-bottom:20px}
 .boarderr{color:var(--warn);font-size:12px;margin-top:8px}
-.opinfo{font-size:12px;color:var(--mut);border-top:1px solid var(--line-soft);margin-top:20px;padding-top:14px}
-.opinfo b{color:var(--paper);font-weight:700}
+.opinfo{border-top:1px solid var(--line-soft);margin-top:20px;padding-top:16px}
+.opinfo-h{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--mut-2);text-transform:uppercase;margin:0 0 10px}
+.opinfo-grid{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12px;color:var(--mut)}
+.opinfo-grid .it{display:flex;gap:7px;align-items:baseline}
+.opinfo-grid .bl{color:var(--mut-2);white-space:nowrap}
+.opinfo-grid .bv{color:var(--paper);font-weight:600}
+.opinfo-foot{font-size:11px;color:var(--mut-2);margin-top:10px;line-height:1.6}
 @media(max-width:640px){
   .strip{grid-template-columns:1fr 1fr}
   .card{grid-template-columns:44px 1fr;grid-template-areas:"s n" "s p"}
@@ -281,7 +286,15 @@ data-ad-height = "90"></ins>
     <div id="boarddetailview" style="display:none"></div>
   </div>
 
-  <p class="opinfo"><b>운영자 정보</b> — 대표자: 에브라임 시드(Ephraim Seed) · 사업자등록번호: 359-05-03748</p>
+  <div class="opinfo">
+    <p class="opinfo-h">사업자 정보</p>
+    <div class="opinfo-grid">
+      <span class="it"><span class="bl">사이트명</span><span class="bv">인천 온라인 임장</span></span>
+      <span class="it"><span class="bl">대표</span><span class="bv">에브라임 시드 (Ephraim Seed)</span></span>
+      <span class="it"><span class="bl">사업자등록번호</span><span class="bv">359-05-03748</span></span>
+    </div>
+    <p class="opinfo-foot">본 사이트에서 제공하는 시세·순위 정보는 참고용이며, 투자·거래의 법적 효력을 갖지 않습니다.</p>
+  </div>
 </div>
 
 <div class="scrim" id="scrim"></div>
