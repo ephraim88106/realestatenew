@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# 네이버
+User-agent: Yeti
+Allow: /
+
+# 다음(카카오)
+User-agent: Daum
+Allow: /
+
+User-agent: Daumoa
+Allow: /
+
+# 구글
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# 빙
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://realestatenew.pages.dev/sitemap.xml
