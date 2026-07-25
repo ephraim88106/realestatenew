@@ -25,6 +25,8 @@ SITE_NAME   = "인천 온라인 임장"
 SITE_DESC   = "인천 지역 아파트·동네 정보를 온라인으로 미리 둘러보는 임장 서비스"
 GA_ID       = "G-05H2B7ZS4E"          # 없으면 None
 OG_IMAGE    = SITE + "/assets/og-default.png"
+# 네이버 서치어드바이저 HTML 태그 방식 content 값 (웹마스터도구에서 발급)
+NAVER_VERIFY = ""
 DEAD_DOMAINS = []          # canonical 이 잘못 가리키던 죽은 도메인들
 ARTICLE_RE  = re.compile(r"^(?!index)")   # 글로 취급할 파일명 패턴
 # ────────────────────────────────────────────────────────────────────
@@ -121,6 +123,9 @@ def build_block(rel, src):
     title, desc, url = get_title(src), get_description(src), clean_url(rel)
     h = head_of(src)
     parts = [BEGIN]
+
+    if NAVER_VERIFY and rel == "index.html":
+        parts.append('<meta name="naver-site-verification" content="%s">' % NAVER_VERIFY)
 
     if not re.search(r'<meta\s+name=["\']description["\']', h, flags=re.I):
         parts.append('<meta name="description" content="%s">' % esc(desc))
