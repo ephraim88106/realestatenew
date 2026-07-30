@@ -16,12 +16,12 @@ live:true로 등록**해야 사이트에 노출됨(방법론 8-b 참조). lawd�
 - [x] 남동구 논현동 — lawd 28200, umd 논현동 — data/incheon/namdong/nonhyeon.json (2026-07-25 완료, 로컬 커밋 84e6e25 · ⚠️예약 클라우드 실행에서 git proxy가 read-only라 push 실패 → 사용자 수동 push 필요)
 - [x] 부평구 삼산동 — lawd 28237, umd 삼산동 — data/incheon/bupyeong/samsan.json (2026-07-26 완료, 커밋 db2edef · ⚠️기존 데이터 10개 전부 실거래 없는 가공 단지였음 + 삼산체육관역 노선 오기(인천1호선→실제 7호선))
 - [x] 계양구 작전동 — lawd 28245, umd 작전동 — data/incheon/gyeyang/jakjeon.json (2026-07-22 완료, 커밋 8a25011)
+- [x] 서해구 청라동 — lawd **28275**(구 서구 28260, 2026-07 분구로 변경), umd 청라동 — data/incheon/seo/cheongna.json (2026-07-30 완료, 커밋 ed05fd4 · ⚠️기존 10개 중 8개가 국토부 실거래 84㎡ 없는/청라 미존재 단지였음. leader=한양수자인레이크블루(최고 10.5억). regions.json 서해구 28275·검단구 28290 정정 포함)
 
 ### 우선 재검증 (이미 사이트 live · 기존 데이터 재작성 필요)
-- [ ] 서구 청라동 — lawd 28260, umd 청라동 — data/incheon/seo/cheongna.json
-- [ ] 서구 검단신도시 — lawd 28260, umd 확인 필요(대곡동/원당동 인근일 수 있음, umd 없이 받아서 지번으로 판별) — data/incheon/seo/geomdan.json
-- [ ] 서구 아라동 — lawd 28260, umd 아라동 — data/incheon/seo/ara.json
-- [ ] 서구 원당동 — lawd 28260, umd 원당동 — data/incheon/seo/wondang.json
+- [ ] 검단구 검단신도시 — lawd **28290**(구 28260), umd 확인 필요(원당/당하/마전 일대, 지번으로 판별) — data/incheon/seo/geomdan.json
+- [ ] 검단구 아라동 — lawd **28290**(구 28260), umd 확인(아라동은 행정동, 법정동은 원당/당하) — data/incheon/seo/ara.json
+- [ ] 검단구 원당동 — lawd **28290**(구 28260), umd 원당동 — data/incheon/seo/wondang.json
 - [ ] 미추홀구 용현동 — lawd 28177, umd 용현동 — data/incheon/michuhol/yonghyeon.json
 - [ ] 중구 운서동 — lawd 28110, umd 운서동 — data/incheon/jung/unseo.json
 
@@ -45,12 +45,12 @@ live:true로 등록**해야 사이트에 노출됨(방법론 8-b 참조). lawd�
 - [ ] 계양구 임학동 — lawd 28245, umd 임학동 — data/incheon/gyeyang/imhak.json
 - [ ] 계양구 병방동 — lawd 28245, umd 병방동 — data/incheon/gyeyang/byeongbang.json
 - [ ] 계양구 동양동 — lawd 28245, umd 동양동 — data/incheon/gyeyang/dongyang.json
-- [ ] 서구 당하동 — lawd 28260, umd 당하동 — data/incheon/seo/dangha.json
-- [ ] 서구 마전동 — lawd 28260, umd 마전동 — data/incheon/seo/majeon.json
-- [ ] 서구 불로동 — lawd 28260, umd 불로동 — data/incheon/seo/bullo.json
-- [ ] 서구 가정동(루원시티) — lawd 28260, umd 가정동 — data/incheon/seo/gajeong.json
-- [ ] 서구 신현동 — lawd 28260, umd 신현동 — data/incheon/seo/sinhyeon.json
-- [ ] 서구 석남동 — lawd 28260, umd 석남동 — data/incheon/seo/seongnam.json
+- [ ] 검단구 당하동 — lawd **28290**(구 28260), umd 당하동 — data/incheon/seo/dangha.json
+- [ ] 검단구 마전동 — lawd **28290**(구 28260), umd 마전동 — data/incheon/seo/majeon.json
+- [ ] 검단구 불로동 — lawd **28290**(구 28260), umd 불로동 — data/incheon/seo/bullo.json
+- [ ] 서해구 가정동(루원시티) — lawd **28275**(구 28260), umd 가정동 — data/incheon/seo/gajeong.json
+- [ ] 서해구 신현동 — lawd **28275**(구 28260), umd 신현동 — data/incheon/seo/sinhyeon.json
+- [ ] 서해구 석남동 — lawd **28275**(구 28260), umd 석남동 — data/incheon/seo/seongnam.json
 - [ ] 미추홀구 학익동 — lawd 28177, umd 학익동 — data/incheon/michuhol/hakik.json
 - [ ] 미추홀구 관교동 — lawd 28177, umd 관교동 — data/incheon/michuhol/gwangyo.json
 - [ ] 미추홀구 도화동 — lawd 28177, umd 도화동 — data/incheon/michuhol/dohwa.json
@@ -201,3 +201,12 @@ live:true로 등록**해야 사이트에 노출됨(방법론 8-b 참조). lawd�
   그룹핑해서 84㎡ 거래가 있는 모든 단지를 먼저 찾아보고, 그래도 10개가
   안 채워질 때만 소형평형 전용 단지로 채울 것 (소형 전용으로 채울 경우
   반드시 그 사실을 desc에 명시).
+
+- ⚠️ **인천 행정개편 코드 변경(2026-07-30 청라동 작업에서 발견)**: 2026년 7월 1일
+  인천 행정체제 개편으로 **구 서구(28260)가 서구+검단구로 분리되고 서구는 서해구로
+  개칭**됨. MOLIT 실거래 API에서 **옛 코드 28260은 전 기간 0건 반환**(폐기)되고,
+  데이터가 새 코드로 이동함: **서해구=28275**(청라·가정·가좌·검암·경서·공촌·석남·
+  신현·심곡·연희동), **검단구=28290**(금곡·당하·마전·백석·시천·원당·불로·대곡·
+  오류·왕길동). regions.json의 서해구·검단구 lawd와 위 체크리스트 lawd를 새 코드로
+  정정 완료. 남은 서구-출신 동 처리 시 반드시 새 코드 사용(28260 쓰면 0건 나옴).
+  참고로 제물포구·영종구도 신설됐으니 중구/미추홀구 관련 동 처리 시에도 코드 확인 필요.
