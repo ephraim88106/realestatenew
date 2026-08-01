@@ -235,6 +235,7 @@ data-ad-height = "90"></ins>
 
   <div class="viewtabs" role="tablist" aria-label="화면 선택">
     <button class="viewtab" role="tab" data-view="rank" aria-selected="true">랭킹</button>
+    <button class="viewtab" role="tab" data-view="loan" aria-selected="false">대출계산기</button>
     <button class="viewtab" role="tab" data-view="board" aria-selected="false">게시판</button>
   </div>
 
@@ -274,6 +275,126 @@ data-ad-height = "90"></ins>
       <b>종합점수</b>는 시세 45 · 입지 20 · 학군 15 · 신축 10 · 규모 10 가중 합산이며, 순위는 실거래가 기준입니다.
     </p>
   </div>
+
+  <div id="loanview" style="display:none">
+    <section aria-label="대출 계산기">
+      <div class="striphead">
+        <span class="eyebrow2">예산으로 살 수 있는 아파트 찾기</span>
+        <span class="src" id="loan-updated">규제 기준일 —</span>
+      </div>
+      <p class="loanintro">자기자본과 소득을 넣으면 현행 대출 규제를 적용해 <b>최대 대출·구매 가능가</b>를 계산하고, 사이트에 등록된 인천 단지 중 <b>살 수 있는 곳</b>을 골라줍니다.</p>
+
+      <div class="loanform">
+        <div class="lf-row">
+          <div class="lf-field">
+            <label>보유 자기자본(현금)</label>
+            <div class="lf-input"><input id="lo-cash" type="number" inputmode="decimal" min="0" step="0.1" placeholder="예: 2.5"><span class="lf-unit">억원</span></div>
+          </div>
+          <div class="lf-field">
+            <label>부부합산 연소득</label>
+            <div class="lf-input"><input id="lo-income" type="number" inputmode="decimal" min="0" step="100" placeholder="예: 7000"><span class="lf-unit">만원</span></div>
+          </div>
+          <div class="lf-field">
+            <label>주택 보유 상황</label>
+            <select id="lo-own">
+              <option value="무주택">무주택</option>
+              <option value="1주택">1주택(기존주택 6개월 내 처분 예정)</option>
+              <option value="다주택">2주택 이상</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="lf-more" id="lo-moreBtn" type="button" aria-expanded="false">＋ 정밀 조건 입력 (생애최초·신생아·금리·만기)</button>
+        <div class="lf-adv" id="lo-adv" hidden>
+          <div class="lf-row">
+            <div class="lf-field lf-check"><label><input id="lo-first" type="checkbox"> 생애최초 구입</label></div>
+            <div class="lf-field lf-check"><label><input id="lo-newborn" type="checkbox"> 신생아 특례 대상(2년 내 출산)</label></div>
+          </div>
+          <div class="lf-row">
+            <div class="lf-field">
+              <label>기존 대출 연간 상환액(원리금)</label>
+              <div class="lf-input"><input id="lo-debt" type="number" inputmode="decimal" min="0" step="10" placeholder="0"><span class="lf-unit">만원/년</span></div>
+            </div>
+            <div class="lf-field">
+              <label>금리 유형</label>
+              <select id="lo-ratetype"><option value="변동">변동금리</option><option value="고정">고정금리</option></select>
+            </div>
+            <div class="lf-field">
+              <label>대출 만기</label>
+              <select id="lo-term"><option value="30">30년</option><option value="40">40년</option></select>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn lf-calc" id="lo-calcBtn" type="button">계산하기</button>
+      </div>
+
+      <div id="lo-result"></div>
+    </section>
+  </div>
+  <style id="loancss">
+    #loanview .loanintro{font-size:13px;color:var(--mut);margin:0 2px 16px;line-height:1.7}
+    #loanview .loanintro b{color:var(--paper)}
+    .loanform{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+    .lf-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+    .lf-field{display:flex;flex-direction:column;gap:6px}
+    .lf-field label{font-size:12px;color:var(--mut);font-weight:600}
+    .lf-input{display:flex;align-items:center;background:var(--ink);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+    .lf-input input{flex:1;min-width:0;border:none;background:none;color:var(--paper);font:inherit;font-size:15px;padding:10px 12px;outline:none}
+    .lf-input .lf-unit{padding:0 12px;font-size:12px;color:var(--mut);white-space:nowrap}
+    .lf-field select{background:var(--ink);border:1px solid var(--line);border-radius:9px;color:var(--paper);font:inherit;font-size:14px;padding:10px 12px;outline:none;cursor:pointer}
+    .lf-check{justify-content:flex-end}
+    .lf-check label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--paper);font-weight:500;cursor:pointer}
+    .lf-check input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer}
+    .lf-more{border:none;background:none;color:var(--teal);font:inherit;font-size:13px;font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:10px}
+    .lf-adv{border-top:1px solid var(--line-soft);padding-top:14px;margin-bottom:6px}
+    .btn.lf-calc{width:100%;background:var(--brass);color:#241a06;border:none;border-radius:10px;font:inherit;font-weight:800;font-size:15px;padding:13px;cursor:pointer;margin-top:4px}
+    .btn.lf-calc:hover{background:var(--brass-dim)}
+    #lo-result{margin-top:20px}
+    .lo-headline{background:linear-gradient(135deg,var(--ink-3),var(--ink-2));border:1px solid var(--teal-dim);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:16px}
+    .lo-headline .k{font-size:12px;color:var(--mut);letter-spacing:.1em;margin-bottom:8px}
+    .lo-headline .big{font-size:34px;font-weight:800;color:var(--paper);line-height:1.1}
+    .lo-headline .big .won{font-size:19px;color:var(--brass);margin-left:2px}
+    .lo-headline .sub{font-size:12.5px;color:var(--mut);margin-top:10px;line-height:1.6}
+    .lo-headline .sub b{color:var(--teal)}
+    .lo-sect{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
+    .lo-sect h3{margin:0 0 12px;font-size:13px;color:var(--brass);letter-spacing:.04em}
+    .lo-break{display:flex;flex-direction:column;gap:0}
+    .lo-brow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-soft);font-size:13px}
+    .lo-brow:last-child{border-bottom:none}
+    .lo-brow .bl{color:var(--mut)}
+    .lo-brow .bl small{display:block;color:var(--mut-2);font-size:11px;margin-top:2px}
+    .lo-brow .bv{color:var(--paper);font-weight:700;text-align:right;white-space:nowrap}
+    .lo-brow.bind .bv{color:var(--warn)}
+    .lo-brow.final{border-top:2px solid var(--line);margin-top:4px;padding-top:11px;font-size:14px}
+    .lo-brow.final .bv{color:var(--teal);font-size:16px}
+    .lo-policy{display:flex;flex-direction:column;gap:9px}
+    .lo-pcard{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+    .lo-pcard.ok{border-color:var(--teal-dim)}
+    .lo-pcard.no{opacity:.55}
+    .lo-pcard .pn{font-size:13.5px;font-weight:700;color:var(--paper)}
+    .lo-pcard .pd{font-size:11px;color:var(--mut);margin-top:3px}
+    .lo-pcard .pv{text-align:right;white-space:nowrap;font-size:13px}
+    .lo-pcard .pv .amt{font-weight:800;color:var(--teal)}
+    .lo-pcard .pv .rate{font-size:11px;color:var(--mut);display:block;margin-top:2px}
+    .lo-pcard .pv .xno{color:var(--mut-2);font-weight:600;font-size:12px}
+    .lo-aptlist{display:flex;flex-direction:column;gap:7px}
+    .lo-apt{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;background:var(--ink);border:1px solid var(--line);border-radius:9px;padding:11px 13px}
+    .lo-apt.near{border-style:dashed;opacity:.82}
+    .lo-apt .an{font-size:13.5px;color:var(--paper);font-weight:600}
+    .lo-apt .al{font-size:11px;color:var(--mut);margin-top:2px}
+    .lo-apt .ap{font-size:14px;font-weight:800;color:var(--paper);text-align:right;white-space:nowrap}
+    .lo-apt .ap .won{font-size:11px;color:var(--brass)}
+    .lo-badge{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+    .lo-badge.can{background:var(--teal-dim);color:var(--paper)}
+    .lo-badge.nr{background:var(--ink-3);color:var(--warn);border:1px solid var(--warn)}
+    .lo-note{font-size:12px;color:var(--mut);line-height:1.7;margin:6px 2px 0}
+    .lo-warn{background:var(--ink-3);border:1px solid var(--warn);border-radius:10px;padding:13px 15px;font-size:12.5px;color:var(--paper);line-height:1.65;margin-top:6px}
+    .lo-warn b{color:var(--warn)}
+    .lo-empty{font-size:13px;color:var(--mut);padding:14px;text-align:center}
+    .lo-err{color:var(--warn);font-size:13px;padding:10px 2px}
+    @media(max-width:640px){ .lf-row{grid-template-columns:1fr} .lo-headline .big{font-size:28px} .lo-apt{grid-template-columns:1fr auto;grid-template-areas:"n p" "b p"} .lo-apt .an{grid-area:n} .lo-apt .lo-badge{grid-area:b;justify-self:start} .lo-apt .ap{grid-area:p} }
+  </style>
 
   <div id="boardview" style="display:none">
     <div id="boardlistview">
@@ -561,8 +682,10 @@ document.querySelectorAll(".viewtab").forEach(t=>t.onclick=()=>{
   t.setAttribute("aria-selected","true");
   STATE.view=t.dataset.view;
   document.getElementById("rankview").style.display = STATE.view==="rank" ? "" : "none";
+  document.getElementById("loanview").style.display = STATE.view==="loan" ? "" : "none";
   document.getElementById("boardview").style.display = STATE.view==="board" ? "" : "none";
   if(STATE.view==="board"){ showBoardList(); loadBoardList(1); }
+  if(STATE.view==="loan"){ initLoan(); }
 });
 function showBoardList(){
   document.getElementById("boardlistview").style.display="";
@@ -696,6 +819,182 @@ async function deletePost(id){
   const r = await boardApi(`/api/board?id=${id}`,{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});
   if(r.error){ alert(r.error); return; }
   showBoardList(); loadBoardList(BOARD_PAGE);
+}
+
+/* ---------- 대출 계산기 ---------- */
+let LOANCFG=null, LOAN_APTS=null, LOAN_WIRED=false;
+const eok=n=>`${n.toLocaleString(undefined,{maximumFractionDigits:2})}<span class="won">억</span>`;
+// 원리금균등: 원금 P(억), 연이율 rate(%), 만기 term(년) → 최대대출 역산(월상환여력 m억 기준)
+function maxLoanByPayment(monthPay, ratePct, term){
+  const r=ratePct/100/12, n=term*12;
+  if(monthPay<=0) return 0;
+  if(r===0) return monthPay*n;
+  return monthPay * (Math.pow(1+r,n)-1) / (r*Math.pow(1+r,n));
+}
+function monthlyPayment(P, ratePct, term){
+  const r=ratePct/100/12, n=term*12;
+  if(P<=0) return 0;
+  if(r===0) return P/n;
+  return P * (r*Math.pow(1+r,n)) / (Math.pow(1+r,n)-1);
+}
+function priceCap(home, caps){ return home<15?caps.under15 : home<25?caps.b15_25 : caps.over25; }
+
+async function initLoan(){
+  const upd=document.getElementById("loan-updated");
+  if(!LOANCFG){
+    try{ LOANCFG = await (await fetch("data/loan-config.json",{cache:"no-cache"})).json(); }
+    catch(e){ document.getElementById("lo-result").innerHTML=`<p class="lo-err">대출 규제 설정(loan-config.json)을 불러오지 못했어요.</p>`; return; }
+    upd.textContent = `규제 기준일 · ${LOANCFG.updated}`;
+  }
+  if(LOAN_WIRED) return; LOAN_WIRED=true;
+  document.getElementById("lo-moreBtn").onclick=(e)=>{
+    const adv=document.getElementById("lo-adv"), b=e.currentTarget, open=adv.hasAttribute("hidden");
+    if(open){ adv.removeAttribute("hidden"); b.setAttribute("aria-expanded","true"); b.textContent="－ 정밀 조건 접기"; }
+    else{ adv.setAttribute("hidden",""); b.setAttribute("aria-expanded","false"); b.textContent="＋ 정밀 조건 입력 (생애최초·신생아·금리·만기)"; }
+  };
+  document.getElementById("lo-calcBtn").onclick=calcLoan;
+}
+
+// 사이트 live 동 전체의 84㎡ 실거래 단지 수집(1회 캐시)
+async function collectApts(){
+  if(LOAN_APTS) return LOAN_APTS;
+  const out=[];
+  for(const gu of REGIONS.gu){
+    for(const dong of gu.dong.filter(d=>d.live && d.data)){
+      try{
+        const j = await (await fetch(dong.data,{cache:"no-cache"})).json();
+        (j.apts||[]).forEach(a=>{
+          const s=(a.sizes||[]).find(x=>x.m2>=82&&x.m2<=90);
+          if(s) out.push({gu:gu.name, dong:j.dong||dong.name, name:a.name, price:s.real, py:s.py, year:a.year, hh:a.households});
+        });
+      }catch(e){ /* 개별 동 실패는 무시 */ }
+    }
+  }
+  LOAN_APTS=out; return out;
+}
+
+async function calcLoan(){
+  const res=document.getElementById("lo-result");
+  const cash=parseFloat(document.getElementById("lo-cash").value);
+  const incomeMan=parseFloat(document.getElementById("lo-income").value);
+  const own=document.getElementById("lo-own").value;
+  const first=document.getElementById("lo-first").checked;
+  const newborn=document.getElementById("lo-newborn").checked;
+  const debtMan=parseFloat(document.getElementById("lo-debt").value)||0;
+  const rateType=document.getElementById("lo-ratetype").value;
+  const term=parseInt(document.getElementById("lo-term").value,10);
+  if(!(cash>=0) || !(incomeMan>0)){ res.innerHTML=`<p class="lo-err">자기자본과 연소득을 숫자로 입력해주세요.</p>`; return; }
+  const income=incomeMan/10000, debt=debtMan/10000; // 만원 → 억
+  const C=LOANCFG;
+
+  /* ===== 일반 은행 주담대 ===== */
+  const ltv=C.ltv[own] ?? 0;
+  let bank=null;
+  if(ltv>0){
+    const loanLTV = ltv/(1-ltv)*cash;                         // LTV 제약(자기자본으로 나머지 충당)
+    const stressAdd = C.stress.수도권 * (C.stress.반영률[rateType]??0);
+    const baseRate = C.rate[rateType];
+    const judgeRate = baseRate + stressAdd;                    // 스트레스 심사금리
+    const annualCap = income*C.dsr.은행 - debt;                // 연 상환여력(억)
+    const loanDSR = Math.max(0, maxLoanByPayment(annualCap/12, judgeRate, term));
+    let loan = Math.min(loanLTV, loanDSR);
+    let home = cash + loan;
+    const cap = priceCap(home, C.priceCaps);
+    let capBind=false;
+    if(loan>cap){ loan=cap; home=cash+loan; capBind=true; }
+    const monthPay = monthlyPayment(loan, baseRate, term)*10000; // 억→만원
+    bank={loan,home,loanLTV,loanDSR,cap,capBind,judgeRate,baseRate,stressAdd,annualCap,ltv,
+          bind: loan===Math.min(loanLTV,loanDSR) ? (loanLTV<loanDSR?"LTV":"DSR") : "6억한도", monthPay};
+  }
+
+  /* ===== 정책대출 ===== */
+  const policies=[];
+  for(const key of Object.keys(C.policy)){
+    const p=C.policy[key];
+    const incLimit = first? (p.생초소득??p.소득) : p.소득;
+    let eligible=true, reason=[];
+    if(p.무주택필수 && own!=="무주택"){ eligible=false; reason.push("무주택 요건"); }
+    if(p.신생아필수 && !newborn){ eligible=false; reason.push("신생아 요건"); }
+    if(income>incLimit){ eligible=false; reason.push(`소득 ${incLimit}억 초과`); }
+    let pLoan=0, pHome=0;
+    if(eligible){
+      const cap=first? (p.생초한도??p.한도) : p.한도;
+      const loanLTV = p.ltv/(1-p.ltv)*cash;
+      const annualCap = income*C.dsr.은행 - debt;
+      const loanDSR = Math.max(0, maxLoanByPayment(annualCap/12, p.금리, term)); // 정책=고정, 스트레스 미적용
+      const loanAvail = Math.min(cap, loanLTV, loanDSR);       // 받을 수 있는 최대 대출
+      pHome = Math.min(cash + loanAvail, p.집값상한);           // 집값상한 내에서만 구매 가능
+      pLoan = Math.max(0, pHome - cash);                        // 그 집을 사기 위한 실제 대출액
+      if(pHome<=cash){ eligible=false; reason.push("자기자본이 집값상한 이상"); }
+    }
+    policies.push({key,label:p.label,desc:p.desc,금리:p.금리,집값상한:p.집값상한,한도:(first?(p.생초한도??p.한도):p.한도),eligible,reason,pLoan,pHome});
+  }
+
+  /* ===== 최대 구매가능가 = 은행/정책 중 최대 ===== */
+  const scenarios=[];
+  if(bank) scenarios.push({name:"일반 은행 주담대", home:bank.home});
+  policies.filter(p=>p.eligible && p.pHome>cash).forEach(p=>scenarios.push({name:p.label, home:p.pHome}));
+  const best = scenarios.length? scenarios.reduce((a,b)=>b.home>a.home?b:a) : null;
+  const bestHome = best? best.home : cash;
+
+  /* ===== 렌더 ===== */
+  let html="";
+  html+=`<div class="lo-headline"><div class="k">최대 구매 가능가 (자기자본 ${eok(cash)} 포함)</div>
+    <div class="big">${eok(bestHome)}</div>
+    <div class="sub">${best?`<b>${best.name}</b> 기준 · 대출 ${eok(bestHome-cash)} + 자기자본 ${eok(cash)}`:`대출 없이 자기자본만`}</div></div>`;
+
+  // 은행 주담대 산출 근거
+  if(bank){
+    html+=`<div class="lo-sect"><h3>① 일반 은행 주담대 산출 근거</h3><div class="lo-break">
+      <div class="lo-brow ${bank.bind==='LTV'?'bind':''}"><span class="bl">LTV 한도 <small>무주택 ${(bank.ltv*100).toFixed(0)}% · 자기자본으로 나머지 충당</small></span><span class="bv">${eok(bank.loanLTV)}</span></div>
+      <div class="lo-brow ${bank.bind==='DSR'?'bind':''}"><span class="bl">DSR 한도 <small>연소득의 ${(C.dsr.은행*100).toFixed(0)}% · 심사금리 ${bank.judgeRate.toFixed(1)}%(실금리 ${bank.baseRate}%${bank.stressAdd>0?` + 스트레스 ${bank.stressAdd.toFixed(1)}%p`:""}) · ${term}년</small></span><span class="bv">${eok(bank.loanDSR)}</span></div>
+      <div class="lo-brow ${bank.capBind?'bind':''}"><span class="bl">6·27 수도권 한도 <small>15억 이하 주택 최대 ${C.priceCaps.under15}억</small></span><span class="bv">${eok(bank.cap)}</span></div>
+      <div class="lo-brow final"><span class="bl">→ 최종 대출한도 <small>세 값 중 최솟값 (${bank.bind} 제약)</small></span><span class="bv">${eok(bank.loan)}</span></div>
+      <div class="lo-brow"><span class="bl">예상 월상환액 <small>실금리 ${bank.baseRate}% · ${term}년 원리금균등</small></span><span class="bv">${Math.round(bank.monthPay).toLocaleString()}만원/월</span></div>
+    </div></div>`;
+  } else {
+    html+=`<div class="lo-sect"><h3>① 일반 은행 주담대</h3><p class="lo-note">${own} 상태에서는 수도권 규제상 신규 주담대 LTV가 0%로, 일반 은행 주담대가 사실상 불가합니다(1주택은 기존주택 6개월 내 처분 약정 시 가능). 정책대출·무주택 전환 여부를 은행에 확인하세요.</p></div>`;
+  }
+
+  // 정책대출
+  html+=`<div class="lo-sect"><h3>② 정책대출 적용 판별</h3><div class="lo-policy">`;
+  policies.forEach(p=>{
+    if(p.eligible){
+      html+=`<div class="lo-pcard ok"><div><div class="pn">${p.label} ✓</div><div class="pd">${p.desc} · 집값상한 ${p.집값상한}억 · 금리 약 ${p.금리}%</div></div>
+        <div class="pv"><span class="amt">대출 ${eok(p.pLoan)}</span><span class="rate">구매가능 ${eok(p.pHome)}</span></div></div>`;
+    } else {
+      html+=`<div class="lo-pcard no"><div><div class="pn">${p.label}</div><div class="pd">${p.desc}</div></div>
+        <div class="pv"><span class="xno">해당 없음</span><span class="rate">${p.reason.join(" · ")}</span></div></div>`;
+    }
+  });
+  html+=`</div><p class="lo-note">정책대출은 무주택 실수요자 대상이며, 위 금리는 대략값입니다. 신생아 특례 등은 우대금리·소득구간별 차등이 커서 실제 금리는 수탁은행 확인이 필요합니다.</p></div>`;
+
+  html+=`<div id="lo-aptwrap" class="lo-sect"><h3>③ 이 예산으로 살 수 있는 인천 단지 (84㎡ 실거래 기준)</h3><div class="lo-aptlist"><p class="lo-empty">단지 데이터를 불러오는 중…</p></div></div>`;
+
+  // 은행권 확인 + 규제 요약
+  html+=`<div class="lo-warn"><b>⚠ 반드시 은행권에 직접 확인하세요.</b> ${C.disclaimer}</div>`;
+  html+=`<p class="lo-note"><b>적용 규제 요약</b> — 지역: 인천(수도권·비규제) · ${C.basis}</p>`;
+
+  res.innerHTML=html;
+
+  // 단지 연동(비동기)
+  const apts=await collectApts();
+  const wrap=document.querySelector("#lo-aptwrap .lo-aptlist");
+  const near=bestHome*1.05;
+  const can=apts.filter(a=>a.price<=bestHome).sort((a,b)=>b.price-a.price);
+  const nr =apts.filter(a=>a.price>bestHome && a.price<=near).sort((a,b)=>a.price-b.price);
+  if(!apts.length){ wrap.innerHTML=`<p class="lo-empty">비교할 단지 데이터가 없습니다.</p>`; return; }
+  let rows="";
+  if(can.length){
+    rows+=can.slice(0,25).map(a=>`<div class="lo-apt"><div><div class="an">${a.name}</div><div class="al">${a.gu} ${a.dong} · ${a.py}평 · ${a.year}년 · ${a.hh?a.hh.toLocaleString()+"세대":""}</div></div>
+      <span class="lo-badge can">구매 가능</span><span class="ap">${eok(a.price)}</span></div>`).join("");
+  }
+  if(nr.length){
+    rows+=nr.slice(0,8).map(a=>`<div class="lo-apt near"><div><div class="an">${a.name}</div><div class="al">${a.gu} ${a.dong} · ${a.py}평 · ${a.year}년</div></div>
+      <span class="lo-badge nr">+5% 근접</span><span class="ap">${eok(a.price)}</span></div>`).join("");
+  }
+  wrap.innerHTML = rows || `<p class="lo-empty">현재 예산(${eok(bestHome)})으로 살 수 있는 등록 단지가 아직 없어요. 자기자본이나 소득을 조정해보세요.</p>`;
+  if(can.length>25) wrap.insertAdjacentHTML("beforeend",`<p class="lo-note">구매 가능 단지 ${can.length}곳 중 가격 높은 순 25곳만 표시했어요.</p>`);
 }
 
 init();
