@@ -304,7 +304,7 @@ data-ad-height = "90"></ins>
           </div>
         </div>
 
-        <button class="lf-more" id="lo-moreBtn" type="button" aria-expanded="false">＋ 정밀 조건 입력 (생애최초·신생아·금리·만기)</button>
+        <button class="lf-more" id="lo-moreBtn" type="button" aria-expanded="false">＋ 정밀 조건 입력 · 생애최초 · 신생아 특례 · 금리 · 만기 <span style="opacity:.75">(더 정확하게)</span></button>
         <div class="lf-adv" id="lo-adv" hidden>
           <div class="lf-row">
             <div class="lf-field lf-check"><label><input id="lo-first" type="checkbox"> 생애최초 구입</label></div>
@@ -346,7 +346,9 @@ data-ad-height = "90"></ins>
     .lf-check{justify-content:flex-end}
     .lf-check label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--paper);font-weight:500;cursor:pointer}
     .lf-check input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer}
-    .lf-more{border:none;background:none;color:var(--teal);font:inherit;font-size:13px;font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:10px}
+    .lf-more{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:1px dashed var(--teal-dim);background:rgba(47,185,166,.09);color:var(--teal);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;padding:12px;border-radius:10px;margin-bottom:12px;transition:.15s}
+    .lf-more:hover{background:rgba(47,185,166,.17);border-style:solid}
+    .lf-more[aria-expanded="true"]{background:rgba(47,185,166,.05);border-color:var(--line);color:var(--mut)}
     .lf-adv{border-top:1px solid var(--line-soft);padding-top:14px;margin-bottom:6px}
     .btn.lf-calc{width:100%;background:var(--brass);color:#241a06;border:none;border-radius:10px;font:inherit;font-weight:800;font-size:15px;padding:13px;cursor:pointer;margin-top:4px}
     .btn.lf-calc:hover{background:var(--brass-dim)}
@@ -849,8 +851,8 @@ async function initLoan(){
   if(LOAN_WIRED) return; LOAN_WIRED=true;
   document.getElementById("lo-moreBtn").onclick=(e)=>{
     const adv=document.getElementById("lo-adv"), b=e.currentTarget, open=adv.hasAttribute("hidden");
-    if(open){ adv.removeAttribute("hidden"); b.setAttribute("aria-expanded","true"); b.textContent="－ 정밀 조건 접기"; }
-    else{ adv.setAttribute("hidden",""); b.setAttribute("aria-expanded","false"); b.textContent="＋ 정밀 조건 입력 (생애최초·신생아·금리·만기)"; }
+    if(open){ adv.removeAttribute("hidden"); b.setAttribute("aria-expanded","true"); b.innerHTML="－ 정밀 조건 접기"; }
+    else{ adv.setAttribute("hidden",""); b.setAttribute("aria-expanded","false"); b.innerHTML='＋ 정밀 조건 입력 · 생애최초 · 신생아 특례 · 금리 · 만기 <span style="opacity:.75">(더 정확하게)</span>'; }
   };
   document.getElementById("lo-calcBtn").onclick=calcLoan;
 }
