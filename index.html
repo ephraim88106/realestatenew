@@ -137,6 +137,10 @@ body{background:linear-gradient(0deg,rgba(8,27,36,.4),rgba(8,27,36,.4)),
 .viewtabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:2px}
 .viewtab{border:none;background:none;color:var(--mut);font:inherit;font-weight:700;font-size:14px;padding:9px 4px;margin-right:16px;cursor:pointer;border-bottom:2px solid transparent}
 .viewtab[aria-selected="true"]{color:var(--paper);border-bottom-color:var(--brass)}
+.viewtab[data-view="loan"]{color:var(--brass)}
+.viewtab[data-view="loan"][aria-selected="true"]{color:var(--paper)}
+.viewtab .tabbadge{display:inline-block;margin-left:5px;background:var(--brass);color:#241a06;font-size:9px;font-weight:800;letter-spacing:.05em;padding:2px 5px;border-radius:5px;vertical-align:middle;transform:translateY(-1px);animation:badgepulse 2s ease-in-out 3}
+@keyframes badgepulse{0%,100%{box-shadow:0 0 0 0 rgba(211,172,95,.5)}50%{box-shadow:0 0 0 5px rgba(211,172,95,0)}}
 .boardhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}
 .boardhead h2{font-size:17px;margin:0}
 .btn{border:1px solid var(--teal-dim);background:var(--teal);color:#04211c;font:inherit;font-weight:700;font-size:13px;padding:9px 16px;border-radius:9px;cursor:pointer}
@@ -235,7 +239,7 @@ data-ad-height = "90"></ins>
 
   <div class="viewtabs" role="tablist" aria-label="화면 선택">
     <button class="viewtab" role="tab" data-view="rank" aria-selected="true">랭킹</button>
-    <button class="viewtab" role="tab" data-view="loan" aria-selected="false">대출계산기</button>
+    <button class="viewtab" role="tab" data-view="loan" aria-selected="false">대출계산기<span class="tabbadge">NEW</span></button>
     <button class="viewtab" role="tab" data-view="board" aria-selected="false">게시판</button>
   </div>
 
