@@ -33,7 +33,9 @@ SITE_DESC   = "인천 지역 아파트·동네 정보를 온라인으로 미리 
 GA_ID       = "G-05H2B7ZS4E"          # 없으면 None
 OG_IMAGE    = SITE + "/assets/og-default.png"
 # 네이버 서치어드바이저 HTML 태그 방식 content 값 (웹마스터도구에서 발급)
-NAVER_VERIFY = ""
+# realestatenew.ephseed.com 용 (2026-08-03 발급).
+# 주의: 이 값이 비어 있으면 seo_fix.py 실행 시마다 소유확인 태그를 지워버린다.
+NAVER_VERIFY = "29b699bb0132e9ea350e9c8a4b52b1f3c16962e3"
 DEAD_DOMAINS = []          # canonical 이 잘못 가리키던 죽은 도메인들
 ARTICLE_RE  = re.compile(r"^(?!index)")   # 글로 취급할 파일명 패턴
 # ────────────────────────────────────────────────────────────────────
