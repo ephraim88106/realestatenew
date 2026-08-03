@@ -72,7 +72,7 @@ def run(script):
     path = os.path.join(ROOT, script)
     if not os.path.exists(path):
         print("  [건너뜀] %s 없음" % script)
-        return False
+        return True   # 없는 건 실패가 아니다
     r = subprocess.run([sys.executable, path], capture_output=True, text=True, cwd=ROOT)
     out = (r.stdout or "").strip() or (r.stderr or "").strip()
     for line in out.splitlines():
@@ -151,12 +151,21 @@ def audit():
 
 
 def main():
+    # 하위 스크립트가 죽었는데 "정상"이라고 보고하면 안 된다.
+    # 2026-08-03: seo_fix.py 가 NameError 로 죽었는데도 점검이 통과해
+    # 문제를 놓칠 뻔했다. 실패는 반드시 문제 목록에 올린다.
+    failed = []
+
     print("[1/2] 광고 주입 — ads_fix.py")
-    run("ads_fix.py")
+    if not run("ads_fix.py"):
+        failed.append("ads_fix.py")
     print("\n[2/2] SEO 정비 — seo_fix.py")
-    run("seo_fix.py")
+    if not run("seo_fix.py"):
+        failed.append("seo_fix.py")
 
     problems = audit()
+    for f in failed:
+        problems.insert(0, "%s 가 실패했다 — 위 오류를 먼저 해결할 것" % f)
 
     print()
     if problems:
