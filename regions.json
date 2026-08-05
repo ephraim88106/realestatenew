@@ -14,7 +14,8 @@
         {
           "name": "연수동",
           "slug": "yeonsu",
-          "live": false
+          "live": true,
+          "data": "data/incheon/yeonsu/yeonsu.json"
         },
         {
           "name": "동춘동",
