@@ -26,7 +26,8 @@
         {
           "name": "청학동",
           "slug": "cheonghak",
-          "live": false
+          "live": true,
+          "data": "data/incheon/yeonsu/cheonghak.json"
         },
         {
           "name": "옥련동",
