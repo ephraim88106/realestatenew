@@ -32,7 +32,8 @@
         {
           "name": "옥련동",
           "slug": "okryeon",
-          "live": false
+          "live": true,
+          "data": "data/incheon/yeonsu/okryeon.json"
         }
       ]
     },
