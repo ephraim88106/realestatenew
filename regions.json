@@ -34,6 +34,12 @@
           "slug": "okryeon",
           "live": true,
           "data": "data/incheon/yeonsu/okryeon.json"
+        },
+        {
+          "name": "선학동",
+          "slug": "seonhak",
+          "live": true,
+          "data": "data/incheon/yeonsu/seonhak.json"
         }
       ]
     },
