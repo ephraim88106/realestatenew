@@ -50,7 +50,8 @@
         {
           "name": "구월동",
           "slug": "guwol",
-          "live": false
+          "live": true,
+          "data": "data/incheon/namdong/guwol.json"
         },
         {
           "name": "논현동",
