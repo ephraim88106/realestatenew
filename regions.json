@@ -62,7 +62,8 @@
         {
           "name": "서창동",
           "slug": "seochang",
-          "live": false
+          "live": true,
+          "data": "data/incheon/namdong/seochang.json"
         }
       ]
     },
