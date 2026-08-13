@@ -64,6 +64,12 @@
           "slug": "seochang",
           "live": true,
           "data": "data/incheon/namdong/seochang.json"
+        },
+        {
+          "name": "만수동",
+          "slug": "mansu",
+          "live": true,
+          "data": "data/incheon/namdong/mansu.json"
         }
       ]
     },
