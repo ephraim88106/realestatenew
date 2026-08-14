@@ -70,6 +70,12 @@
           "slug": "mansu",
           "live": true,
           "data": "data/incheon/namdong/mansu.json"
+        },
+        {
+          "name": "간석동",
+          "slug": "ganseok",
+          "live": true,
+          "data": "data/incheon/namdong/ganseok.json"
         }
       ]
     },
