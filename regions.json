@@ -76,6 +76,12 @@
           "slug": "ganseok",
           "live": true,
           "data": "data/incheon/namdong/ganseok.json"
+        },
+        {
+          "name": "도림동",
+          "slug": "dorim",
+          "live": true,
+          "data": "data/incheon/namdong/dorim.json"
         }
       ]
     },
