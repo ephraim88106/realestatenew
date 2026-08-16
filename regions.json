@@ -92,7 +92,8 @@
         {
           "name": "부평동",
           "slug": "bupyeong",
-          "live": false
+          "live": true,
+          "data": "data/incheon/bupyeong/bupyeong.json"
         },
         {
           "name": "삼산동",
