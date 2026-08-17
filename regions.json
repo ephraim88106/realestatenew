@@ -100,6 +100,12 @@
           "slug": "samsan",
           "live": true,
           "data": "data/incheon/bupyeong/samsan.json"
+        },
+        {
+          "name": "산곡동",
+          "slug": "sangok",
+          "live": true,
+          "data": "data/incheon/bupyeong/sangok.json"
         }
       ]
     },
