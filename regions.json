@@ -112,6 +112,12 @@
      "slug": "bugae",
      "live": true,
      "data": "data/incheon/bupyeong/bugae.json"
+    },
+    {
+     "name": "갈산동",
+     "slug": "galsan",
+     "live": true,
+     "data": "data/incheon/bupyeong/galsan.json"
     }
    ]
   },
