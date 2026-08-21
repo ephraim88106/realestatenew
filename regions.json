@@ -136,6 +136,12 @@
           "slug": "jakjeon",
           "live": true,
           "data": "data/incheon/gyeyang/jakjeon.json"
+        },
+        {
+          "name": "계산동",
+          "slug": "gyesan",
+          "live": true,
+          "data": "data/incheon/gyeyang/gyesan.json"
         }
       ]
     },
