@@ -1,231 +1,237 @@
 {
-  "city": "인천광역시",
-  "gu": [
+ "city": "인천광역시",
+ "gu": [
+  {
+   "name": "연수구",
+   "lawd": "28185",
+   "dong": [
     {
-      "name": "연수구",
-      "lawd": "28185",
-      "dong": [
-        {
-          "name": "송도동",
-          "slug": "songdo",
-          "live": true,
-          "data": "data/incheon/yeonsu/songdo.json"
-        },
-        {
-          "name": "연수동",
-          "slug": "yeonsu",
-          "live": true,
-          "data": "data/incheon/yeonsu/yeonsu.json"
-        },
-        {
-          "name": "동춘동",
-          "slug": "dongchun",
-          "live": true,
-          "data": "data/incheon/yeonsu/dongchun.json"
-        },
-        {
-          "name": "청학동",
-          "slug": "cheonghak",
-          "live": true,
-          "data": "data/incheon/yeonsu/cheonghak.json"
-        },
-        {
-          "name": "옥련동",
-          "slug": "okryeon",
-          "live": true,
-          "data": "data/incheon/yeonsu/okryeon.json"
-        },
-        {
-          "name": "선학동",
-          "slug": "seonhak",
-          "live": true,
-          "data": "data/incheon/yeonsu/seonhak.json"
-        }
-      ]
+     "name": "송도동",
+     "slug": "songdo",
+     "live": true,
+     "data": "data/incheon/yeonsu/songdo.json"
     },
     {
-      "name": "남동구",
-      "lawd": "28200",
-      "dong": [
-        {
-          "name": "구월동",
-          "slug": "guwol",
-          "live": true,
-          "data": "data/incheon/namdong/guwol.json"
-        },
-        {
-          "name": "논현동",
-          "slug": "nonhyeon",
-          "live": true,
-          "data": "data/incheon/namdong/nonhyeon.json"
-        },
-        {
-          "name": "서창동",
-          "slug": "seochang",
-          "live": true,
-          "data": "data/incheon/namdong/seochang.json"
-        },
-        {
-          "name": "만수동",
-          "slug": "mansu",
-          "live": true,
-          "data": "data/incheon/namdong/mansu.json"
-        },
-        {
-          "name": "간석동",
-          "slug": "ganseok",
-          "live": true,
-          "data": "data/incheon/namdong/ganseok.json"
-        },
-        {
-          "name": "도림동",
-          "slug": "dorim",
-          "live": true,
-          "data": "data/incheon/namdong/dorim.json"
-        }
-      ]
+     "name": "연수동",
+     "slug": "yeonsu",
+     "live": true,
+     "data": "data/incheon/yeonsu/yeonsu.json"
     },
     {
-      "name": "부평구",
-      "lawd": "28237",
-      "dong": [
-        {
-          "name": "부평동",
-          "slug": "bupyeong",
-          "live": true,
-          "data": "data/incheon/bupyeong/bupyeong.json"
-        },
-        {
-          "name": "삼산동",
-          "slug": "samsan",
-          "live": true,
-          "data": "data/incheon/bupyeong/samsan.json"
-        },
-        {
-          "name": "산곡동",
-          "slug": "sangok",
-          "live": true,
-          "data": "data/incheon/bupyeong/sangok.json"
-        },
-        {
-          "name": "부개동",
-          "slug": "bugae",
-          "live": true,
-          "data": "data/incheon/bupyeong/bugae.json"
-        },
-        {
-          "name": "갈산동",
-          "slug": "galsan",
-          "live": true,
-          "data": "data/incheon/bupyeong/galsan.json"
-        },
-        {
-          "name": "청천동",
-          "slug": "cheongcheon",
-          "live": true,
-          "data": "data/incheon/bupyeong/cheongcheon.json"
-        }
-      ]
+     "name": "동춘동",
+     "slug": "dongchun",
+     "live": true,
+     "data": "data/incheon/yeonsu/dongchun.json"
     },
     {
-      "name": "계양구",
-      "lawd": "28245",
-      "dong": [
-        {
-          "name": "작전동",
-          "slug": "jakjeon",
-          "live": true,
-          "data": "data/incheon/gyeyang/jakjeon.json"
-        },
-        {
-          "name": "계산동",
-          "slug": "gyesan",
-          "live": true,
-          "data": "data/incheon/gyeyang/gyesan.json"
-        },
-        {
-          "name": "임학동",
-          "slug": "imhak",
-          "live": true,
-          "data": "data/incheon/gyeyang/imhak.json"
-        }
-      ]
+     "name": "청학동",
+     "slug": "cheonghak",
+     "live": true,
+     "data": "data/incheon/yeonsu/cheonghak.json"
     },
     {
-      "name": "서해구",
-      "lawd": "28275",
-      "dong": [
-        {
-          "name": "청라동",
-          "slug": "cheongna",
-          "live": true,
-          "data": "data/incheon/seo/cheongna.json"
-        }
-      ]
+     "name": "옥련동",
+     "slug": "okryeon",
+     "live": true,
+     "data": "data/incheon/yeonsu/okryeon.json"
     },
     {
-      "name": "검단구",
-      "lawd": "28290",
-      "dong": [
-        {
-          "name": "검단신도시",
-          "slug": "geomdan",
-          "live": true,
-          "data": "data/incheon/seo/geomdan.json"
-        },
-        {
-          "name": "아라동",
-          "slug": "ara",
-          "live": true,
-          "data": "data/incheon/seo/ara.json"
-        },
-        {
-          "name": "원당동",
-          "slug": "wondang",
-          "live": true,
-          "data": "data/incheon/seo/wondang.json"
-        }
-      ]
-    },
-    {
-      "name": "미추홀구",
-      "lawd": "28177",
-      "dong": [
-        {
-          "name": "용현동",
-          "slug": "yonghyeon",
-          "live": true,
-          "data": "data/incheon/michuhol/yonghyeon.json"
-        },
-        {
-          "name": "주안동",
-          "slug": "juan",
-          "live": false
-        }
-      ]
-    },
-    {
-      "name": "중구",
-      "lawd": "28155",
-      "dong": [
-        {
-          "name": "운서동",
-          "slug": "unseo",
-          "live": true,
-          "data": "data/incheon/jung/unseo.json"
-        }
-      ]
-    },
-    {
-      "name": "동구",
-      "lawd": "28140",
-      "dong": [
-        {
-          "name": "송현동",
-          "slug": "songhyeon",
-          "live": false
-        }
-      ]
+     "name": "선학동",
+     "slug": "seonhak",
+     "live": true,
+     "data": "data/incheon/yeonsu/seonhak.json"
     }
-  ]
+   ]
+  },
+  {
+   "name": "남동구",
+   "lawd": "28200",
+   "dong": [
+    {
+     "name": "구월동",
+     "slug": "guwol",
+     "live": true,
+     "data": "data/incheon/namdong/guwol.json"
+    },
+    {
+     "name": "논현동",
+     "slug": "nonhyeon",
+     "live": true,
+     "data": "data/incheon/namdong/nonhyeon.json"
+    },
+    {
+     "name": "서창동",
+     "slug": "seochang",
+     "live": true,
+     "data": "data/incheon/namdong/seochang.json"
+    },
+    {
+     "name": "만수동",
+     "slug": "mansu",
+     "live": true,
+     "data": "data/incheon/namdong/mansu.json"
+    },
+    {
+     "name": "간석동",
+     "slug": "ganseok",
+     "live": true,
+     "data": "data/incheon/namdong/ganseok.json"
+    },
+    {
+     "name": "도림동",
+     "slug": "dorim",
+     "live": true,
+     "data": "data/incheon/namdong/dorim.json"
+    }
+   ]
+  },
+  {
+   "name": "부평구",
+   "lawd": "28237",
+   "dong": [
+    {
+     "name": "부평동",
+     "slug": "bupyeong",
+     "live": true,
+     "data": "data/incheon/bupyeong/bupyeong.json"
+    },
+    {
+     "name": "삼산동",
+     "slug": "samsan",
+     "live": true,
+     "data": "data/incheon/bupyeong/samsan.json"
+    },
+    {
+     "name": "산곡동",
+     "slug": "sangok",
+     "live": true,
+     "data": "data/incheon/bupyeong/sangok.json"
+    },
+    {
+     "name": "부개동",
+     "slug": "bugae",
+     "live": true,
+     "data": "data/incheon/bupyeong/bugae.json"
+    },
+    {
+     "name": "갈산동",
+     "slug": "galsan",
+     "live": true,
+     "data": "data/incheon/bupyeong/galsan.json"
+    },
+    {
+     "name": "청천동",
+     "slug": "cheongcheon",
+     "live": true,
+     "data": "data/incheon/bupyeong/cheongcheon.json"
+    }
+   ]
+  },
+  {
+   "name": "계양구",
+   "lawd": "28245",
+   "dong": [
+    {
+     "name": "작전동",
+     "slug": "jakjeon",
+     "live": true,
+     "data": "data/incheon/gyeyang/jakjeon.json"
+    },
+    {
+     "name": "계산동",
+     "slug": "gyesan",
+     "live": true,
+     "data": "data/incheon/gyeyang/gyesan.json"
+    },
+    {
+     "name": "임학동",
+     "slug": "imhak",
+     "live": true,
+     "data": "data/incheon/gyeyang/imhak.json"
+    },
+    {
+     "name": "병방동",
+     "slug": "byeongbang",
+     "live": true,
+     "data": "data/incheon/gyeyang/byeongbang.json"
+    }
+   ]
+  },
+  {
+   "name": "서해구",
+   "lawd": "28275",
+   "dong": [
+    {
+     "name": "청라동",
+     "slug": "cheongna",
+     "live": true,
+     "data": "data/incheon/seo/cheongna.json"
+    }
+   ]
+  },
+  {
+   "name": "검단구",
+   "lawd": "28290",
+   "dong": [
+    {
+     "name": "검단신도시",
+     "slug": "geomdan",
+     "live": true,
+     "data": "data/incheon/seo/geomdan.json"
+    },
+    {
+     "name": "아라동",
+     "slug": "ara",
+     "live": true,
+     "data": "data/incheon/seo/ara.json"
+    },
+    {
+     "name": "원당동",
+     "slug": "wondang",
+     "live": true,
+     "data": "data/incheon/seo/wondang.json"
+    }
+   ]
+  },
+  {
+   "name": "미추홀구",
+   "lawd": "28177",
+   "dong": [
+    {
+     "name": "용현동",
+     "slug": "yonghyeon",
+     "live": true,
+     "data": "data/incheon/michuhol/yonghyeon.json"
+    },
+    {
+     "name": "주안동",
+     "slug": "juan",
+     "live": false
+    }
+   ]
+  },
+  {
+   "name": "중구",
+   "lawd": "28155",
+   "dong": [
+    {
+     "name": "운서동",
+     "slug": "unseo",
+     "live": true,
+     "data": "data/incheon/jung/unseo.json"
+    }
+   ]
+  },
+  {
+   "name": "동구",
+   "lawd": "28140",
+   "dong": [
+    {
+     "name": "송현동",
+     "slug": "songhyeon",
+     "live": false
+    }
+   ]
+  }
+ ]
 }
