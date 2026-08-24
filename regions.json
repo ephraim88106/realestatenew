@@ -154,6 +154,12 @@
      "slug": "byeongbang",
      "live": true,
      "data": "data/incheon/gyeyang/byeongbang.json"
+    },
+    {
+     "name": "동양동",
+     "slug": "dongyang",
+     "live": true,
+     "data": "data/incheon/gyeyang/dongyang.json"
     }
    ]
   },
