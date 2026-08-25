@@ -196,6 +196,12 @@
      "slug": "wondang",
      "live": true,
      "data": "data/incheon/seo/wondang.json"
+    },
+    {
+     "name": "당하동",
+     "slug": "dangha",
+     "live": true,
+     "data": "data/incheon/seo/dangha.json"
     }
    ]
   },
