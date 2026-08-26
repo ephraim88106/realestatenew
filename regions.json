@@ -202,6 +202,12 @@
      "slug": "dangha",
      "live": true,
      "data": "data/incheon/seo/dangha.json"
+    },
+    {
+     "name": "마전동",
+     "slug": "majeon",
+     "live": true,
+     "data": "data/incheon/seo/majeon.json"
     }
    ]
   },
