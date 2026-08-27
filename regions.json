@@ -208,6 +208,12 @@
      "slug": "majeon",
      "live": true,
      "data": "data/incheon/seo/majeon.json"
+    },
+    {
+     "name": "불로동",
+     "slug": "bullo",
+     "live": true,
+     "data": "data/incheon/seo/bullo.json"
     }
    ]
   },
