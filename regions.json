@@ -178,6 +178,12 @@
           "slug": "gajeong",
           "live": true,
           "data": "data/incheon/seo/gajeong.json"
+        },
+        {
+          "name": "신현동",
+          "slug": "sinhyeon",
+          "live": true,
+          "data": "data/incheon/seo/sinhyeon.json"
         }
       ]
     },
