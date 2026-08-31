@@ -246,6 +246,12 @@
      "data": "data/incheon/michuhol/yonghyeon.json"
     },
     {
+     "name": "학익동",
+     "slug": "hakik",
+     "live": true,
+     "data": "data/incheon/michuhol/hakik.json"
+    },
+    {
      "name": "주안동",
      "slug": "juan",
      "live": false
