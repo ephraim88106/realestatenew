@@ -261,6 +261,12 @@
           "name": "주안동",
           "slug": "juan",
           "live": false
+        },
+        {
+          "name": "도화동",
+          "slug": "dohwa",
+          "live": true,
+          "data": "data/incheon/michuhol/dohwa.json"
         }
       ]
     },
