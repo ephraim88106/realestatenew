@@ -267,6 +267,12 @@
           "slug": "dohwa",
           "live": true,
           "data": "data/incheon/michuhol/dohwa.json"
+        },
+        {
+          "name": "숭의동",
+          "slug": "sungui",
+          "live": true,
+          "data": "data/incheon/michuhol/sungui.json"
         }
       ]
     },
