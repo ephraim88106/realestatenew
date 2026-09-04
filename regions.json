@@ -285,6 +285,12 @@
           "slug": "unseo",
           "live": true,
           "data": "data/incheon/jung/unseo.json"
+        },
+        {
+          "name": "운남동",
+          "slug": "unnam",
+          "live": true,
+          "data": "data/incheon/jung/unnam.json"
         }
       ]
     },
