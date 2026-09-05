@@ -291,6 +291,12 @@
           "slug": "unnam",
           "live": true,
           "data": "data/incheon/jung/unnam.json"
+        },
+        {
+          "name": "중산동",
+          "slug": "jungsan",
+          "live": true,
+          "data": "data/incheon/jung/jungsan.json"
         }
       ]
     },
