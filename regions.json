@@ -277,7 +277,7 @@
       ]
     },
     {
-      "name": "중구",
+      "name": "영종구",
       "lawd": "28155",
       "dong": [
         {
@@ -301,9 +301,15 @@
       ]
     },
     {
-      "name": "동구",
-      "lawd": "28140",
+      "name": "제물포구",
+      "lawd": "28125",
       "dong": [
+        {
+          "name": "신흥동",
+          "slug": "sinheung",
+          "live": true,
+          "data": "data/incheon/jung/sinheung.json"
+        },
         {
           "name": "송현동",
           "slug": "songhyeon",
