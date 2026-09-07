@@ -313,7 +313,8 @@
         {
           "name": "송현동",
           "slug": "songhyeon",
-          "live": false
+          "live": true,
+          "data": "data/incheon/donggu/songhyeon.json"
         }
       ]
     }
