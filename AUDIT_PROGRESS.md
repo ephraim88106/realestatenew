@@ -251,3 +251,14 @@ live:true로 등록**해야 사이트에 노출됨(방법론 8-b 참조). lawd�
   판별 순서: ①직방 `v2/search`로 그 법정동 아파트 단지·지번 전수 확보 → ②**각 단지의 평형 구성(전용면적 목록)으로 역산**
   (그 동에서 전용 84.51㎡를 가진 단지가 하나뿐이면 84.51 거래는 그 단지 것) → ③**아파트봉 동 목록 HTML의 RSC 페이로드에 등록명별 `jibun`이 박혀 있어** 최종 확인 가능.
   등록명 개수를 그대로 단지 수로 세면 세대수·거래건수가 전부 틀어진다.
+
+- 🛑 **화수동 처리 시도 중단(2026-09-21) — 이 세션의 네트워크 egress 정책이 조사에 필요한 모든 외부 호스트를 차단함**:
+  `realestatenew.pages.dev`(사이트 자체 trade API)·`namu.wiki`·`apis.zigbang.com`·`google.com`에 curl과 WebFetch
+  둘 다 `403`/`EGRESS_BLOCKED`로 거부됨(`curl -sS $HTTPS_PROXY/__agentproxy/status`의 recentRelayFailures로 확인,
+  전부 "gateway answered 403 to CONNECT (policy denial)"). 이 세션에서 통하는 건 GitHub와 WebSearch(스니펫만
+  반환하는 별도 백엔드)뿐이라, 국토부 실거래 API·나무위키·직방 전수조사가 물리적으로 불가능했다.
+  **실거래 데이터 없이 임의로 단지·시세를 지어내는 것은 이 프로젝트 원칙 위반이라 화수동 JSON을 작성하지 않고
+  체크박스도 `[ ]`로 남겨둔다.** 우회(프록시 무력화 등)는 시도하지 않았다 — 조직 egress 정책 위반이기 때문.
+  **근본 해결은 이 세션(또는 예약 트리거)의 egress 허용목록에 realestatenew.pages.dev·namu.wiki·apis.zigbang.com을
+  추가하는 것**(사람만 할 수 있는 환경 설정 작업). 허용목록이 갱신되기 전까지는 다음 예약 실행도 같은 지점에서
+  막힐 가능성이 높으니, 재시도 전에 프록시 상태부터 확인할 것.
