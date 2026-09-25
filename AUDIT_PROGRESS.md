@@ -251,3 +251,17 @@ live:true로 등록**해야 사이트에 노출됨(방법론 8-b 참조). lawd�
   판별 순서: ①직방 `v2/search`로 그 법정동 아파트 단지·지번 전수 확보 → ②**각 단지의 평형 구성(전용면적 목록)으로 역산**
   (그 동에서 전용 84.51㎡를 가진 단지가 하나뿐이면 84.51 거래는 그 단지 것) → ③**아파트봉 동 목록 HTML의 RSC 페이로드에 등록명별 `jibun`이 박혀 있어** 최종 확인 가능.
   등록명 개수를 그대로 단지 수로 세면 세대수·거래건수가 전부 틀어진다.
+
+- ⚠️ **화수동 작업 시도 실패 — 배포 API·MOLIT 원천 전부 egress 차단(2026-09-25)**:
+  이번 예약 실행 환경의 네트워크 정책이 `realestatenew.pages.dev`, `apis.data.go.kr`,
+  `pages.dev`, `www.google.com`을 전부 `connect_rejected`(조직 egress 정책)로 막았음
+  (`github.com`만 허용목록에 있어 연결됨 — clone/push는 가능하나 `/api/trade` 호출과
+  MOLIT 원본 API 직접 호출이 둘 다 불가능). WebFetch로도 동일하게
+  `EGRESS_BLOCKED: realestatenew.pages.dev`가 났음. 방법론 1~3단계(trade.js 정상
+  동작 확인·실거래 84㎡ 전수조사)를 수행할 방법이 이 세션엔 없어서, 검증되지 않은
+  추정치로 hwasu.json을 새로 지어내는 대신 **화수동 작업을 진행하지 않고 체크박스도
+  그대로 `[ ]`로 남김**. WebSearch 도구는 정상 동작해 일반 웹검색은 가능했음(구글
+  자동완성 API류는 미확인). 우회(프록시 unset 등)는 시도하지 않음.
+  **다음 실행에서 재시도**하되, 같은 차단이 반복되면 이 프로젝트의 세션 네트워크
+  정책(egress allowlist)에 `realestatenew.pages.dev`(및 가능하면 `apis.data.go.kr`)를
+  추가해야 함 — 이는 사람(주인님)만 할 수 있는 설정.
