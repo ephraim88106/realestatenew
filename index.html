@@ -233,6 +233,43 @@ body{background:var(--ink)}
   .viewtab .tabbadge{display:block;margin:4px auto 0;width:max-content}
 }
 @media(max-width:640px){.wrap{padding:16px 14px 80px}.rankgrid,.smalllist{grid-template-columns:1fr}}
+
+/* ---- 라이브 느낌: 티커·랭킹 위젯·스파크라인·점멸 ---- */
+.livedot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--up);margin-right:6px;vertical-align:middle;animation:livepulse 1.6s ease-in-out infinite}
+@keyframes livepulse{0%,100%{box-shadow:0 0 0 0 rgba(255,90,95,.55);opacity:1}50%{box-shadow:0 0 0 6px rgba(255,90,95,0);opacity:.55}}
+.ticker{display:flex;align-items:center;gap:14px;background:var(--ink-2);border-radius:var(--r);padding:0 14px;height:40px;margin-bottom:16px;overflow:hidden}
+.ticker[hidden]{display:none}
+.tk-label{flex:none;font-size:12px;font-weight:800;color:var(--brass);white-space:nowrap}
+.tk-track{flex:1;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.tk-move{display:inline-flex;gap:34px;padding-left:34px;animation:tkscroll var(--tkdur,60s) linear infinite}
+.ticker:hover .tk-move{animation-play-state:paused}
+@keyframes tkscroll{to{transform:translateX(-50%)}}
+.tk-it{font-size:13px;color:var(--mut)}
+.tk-it b{color:var(--paper);font-weight:700}
+.tk-it .up{color:var(--up)}.tk-it .dn{color:var(--down)}
+.livewrap[hidden]{display:none}
+.livewrap{margin-bottom:26px}
+.livegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.livecol{background:var(--ink-2);border-radius:var(--r);padding:14px 16px}
+.livecol h3{margin:0 0 6px;font-size:14px;font-weight:800}
+.lrow{display:grid;grid-template-columns:20px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line-soft);font-size:13px}
+.lrow:first-of-type{border-top:none}
+.lrow .n{color:var(--mut-2);font-weight:800;text-align:center}
+.lrow .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrow .nm small{display:block;color:var(--mut-2);font-size:11px;font-weight:500}
+.lrow .rv{text-align:right;font-weight:800}
+.lrow .rv small{display:block;font-size:11px;font-weight:700}
+.lempty{color:var(--mut-2);font-size:12px;padding:14px 0 6px}
+.spark{display:block;margin-top:6px;width:100%;height:28px}
+.spark polyline{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:sparkdraw 1.1s ease-out forwards}
+@keyframes sparkdraw{to{stroke-dashoffset:0}}
+.spark.up polyline{stroke:var(--up)}.spark.dn polyline{stroke:var(--down)}.spark.fl polyline{stroke:var(--flat)}
+.livetag{font-size:9px;font-weight:800;letter-spacing:.06em;color:var(--up);margin-left:6px;vertical-align:middle}
+.flash-up{animation:flashup 1.6s ease-out}.flash-down{animation:flashdown 1.6s ease-out}
+@keyframes flashup{0%,30%{background:rgba(255,90,95,.28)}100%{background:var(--ink-2)}}
+@keyframes flashdown{0%,30%{background:rgba(77,141,255,.28)}100%{background:var(--ink-2)}}
+@media(max-width:900px){.livegrid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.tk-move,.livedot,.spark polyline,.flash-up,.flash-down{animation:none}.spark polyline{stroke-dashoffset:0}}
 </style>
 <!-- SEO:BEGIN -->
 <meta name="naver-site-verification" content="29b699bb0132e9ea350e9c8a4b52b1f3c16962e3">
@@ -298,6 +335,11 @@ data-ad-height = "90"></ins>
     </div>
   </header>
 
+  <div class="ticker" id="ticker" hidden aria-label="최근 실거래">
+    <span class="tk-label"><span class="livedot"></span>최근 실거래</span>
+    <div class="tk-track"><div class="tk-move" id="tkmove"></div></div>
+  </div>
+
   <div class="navwrap">
     <div class="navrow" id="guNav" aria-label="구 선택"></div>
     <div class="navrow" id="dongNav" aria-label="동 선택"></div>
@@ -317,6 +359,14 @@ data-ad-height = "90"></ins>
       </div>
       <div class="strip" id="strip"></div>
       <p class="stripnote" id="stripnote"></p>
+    </section>
+
+    <section class="livewrap" id="livewrap" hidden aria-label="실시간 랭킹">
+      <div class="striphead">
+        <span class="eyebrow2">실시간 랭킹 · 최근 3개월</span>
+        <span class="src">국토부 실거래 · 이 동 톱10 단지 대상</span>
+      </div>
+      <div class="livegrid" id="livegrid"></div>
     </section>
 
     <div class="controls">
@@ -562,17 +612,11 @@ async function loadDong(gu, dong){
   renderRegion(CURRENT.region);
   renderRank();
   if(STATE.view==="board"){ showBoardList(); loadBoardList(1); }
-  // 국토부 실거래 API 병합
-  try{
-    const summary = await fetchTrade(gu.lawd, "", 6);
-    if(summary && Object.keys(summary).length > 0){
-      mergeTrade(summary);
-      renderRank();
-      setLiveStatus("live");
-    } else {
-      setLiveStatus("");
-    }
-  } catch(e){ console.warn("실거래 API 오류:", e); setLiveStatus("error"); }
+  // 국토부 실거래 API 병합 + 주기 갱신
+  LIVEM=null; LIVE.items=null; FLASH={};
+  clearInterval(liveTimer);
+  await refreshLive(gu, dong, false);
+  liveTimer=setInterval(()=>{ if(!document.hidden && STATE.view==="rank") refreshLive(gu, dong, true); }, 5*60*1000);
 }
 function renderEmpty(name){
   document.getElementById("strip").innerHTML="";
@@ -611,7 +655,7 @@ function renderRank(){
   if(!CURRENT)return;
   const rows=rank(STATE.basis), big=rows.slice(0,3), small=rows.slice(3);
   grid.innerHTML=big.map((p,i)=>{ const {d,bp,total,sub}=p, s=bp.s;
-    return `<button class="card ${i===0?'top':''}" data-id="${d.id}">
+    return `<button class="card ${i===0?'top':''} ${FLASH[d.id]>0?'flash-up':FLASH[d.id]<0?'flash-down':''}" data-id="${d.id}">
       <div class="seal"><div class="rank-n tnum">${i+1}</div></div>
       <div class="cinfo"><p class="cname">${d.name} ${priceTag(s,STATE.mode)}</p>
         <div class="cmeta"><b>${s.py}평</b> · ${d.brand} · ${d.year}년 · <b class="tnum">${d.households.toLocaleString()}</b>세대</div></div>
@@ -628,17 +672,22 @@ function renderRank(){
         <span class="sp tnum">${won(priceOf(s,STATE.mode))}</span>
         <span class="ss"><span class="n tnum">${total.toFixed(1)}</span><small>종합</small></span></button>`; }).join("")}</div>` : "";
   smallwrap.querySelectorAll(".srow").forEach(c=>c.onclick=()=>openDetail(c.dataset.id));
+  countUp(grid); countUp(smallwrap);
+  FLASH={};
 }
 
 /* ---------- 동향 ---------- */
 function renderRegion(R){
   const cls=v=>v>0?"badge-up":v<0?"badge-down":"badge-flat", sign=v=>v>0?"+"+v:""+v;
+  const L=LIVEM, m3=L?L.m3:R.m3, vol=L?L.vol:R.vol;
+  const tag=L?'<span class="livetag">LIVE</span>':'';
   document.getElementById("strip").innerHTML=`
     <div class="cell"><div class="k">체감 온도</div><div class="v badge-flat">${R.temp}</div></div>
-    <div class="cell"><div class="k">가격 추세 · 3개월</div><div class="v tnum ${cls(R.m3)}">${sign(R.m3)}%</div></div>
-    <div class="cell"><div class="k">거래량 추세</div><div class="v tnum ${cls(R.vol)}">${sign(R.vol)}%</div></div>
+    <div class="cell"><div class="k">가격 추세 · 3개월${tag}</div><div class="v tnum ${cls(m3)}">${sign(m3)}%</div>${L?sparkSvg(L.priceSeries,cls(m3)):''}</div>
+    <div class="cell"><div class="k">거래량 추세${tag}</div><div class="v tnum ${cls(vol)}">${sign(vol)}%</div>${L?sparkSvg(L.volSeries,cls(vol)):''}</div>
     <div class="cell"><div class="k">리딩 단지</div><div class="v sm">${R.leader}</div></div>`;
   document.getElementById("stripnote").textContent=R.note||"";
+  countUp(document.getElementById("strip"));
 }
 
 /* ---------- 상세 ---------- */
@@ -729,9 +778,138 @@ function setLiveStatus(state){
   const el = document.getElementById("live-status");
   if(!el) return;
   if(state==="loading") el.innerHTML='<span style="color:var(--mut)">⟳ 실거래 조회 중…</span>';
-  else if(state==="live") el.innerHTML='<span style="color:var(--teal)">● Live 국토부 연동</span>';
-  else if(state==="error") el.innerHTML='<span style="color:var(--warn)">⚠ 실거래 API 오류</span>';
+  else if(state==="live") paintLive();
+  else if(state==="error") el.innerHTML='<span style="color:var(--warn)">⚠ 실거래 API 오류'+(LIVE.at?' · 마지막 정상 '+hhmm(LIVE.at):'')+'</span>';
   else el.innerHTML='';
+}
+const hhmm=d=>d.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit",hour12:false});
+function paintLive(){
+  const el=document.getElementById("live-status"); if(!el||!LIVE.at||!LIVE.items) return;
+  const ago=Math.floor((Date.now()-LIVE.at)/60000);
+  const latest=LIVE.latest?` · 최신 계약 ${LIVE.latest.slice(5).replace("-","/")}`:"";
+  el.innerHTML=`<span style="color:var(--paper)"><span class="livedot"></span>LIVE</span> <span style="color:var(--mut)">· ${hhmm(LIVE.at)} 갱신${ago>0?` (${ago}분 전)`:""}${latest}</span>`;
+}
+setInterval(paintLive,30000);
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden && LIVE.at && Date.now()-LIVE.at>5*60*1000 && STATE.view==="rank" && CURRENT_DONG){
+    const gu=REGIONS.gu.find(g=>g.dong.includes(CURRENT_DONG)); if(gu) refreshLive(gu,CURRENT_DONG,true);
+  }
+});
+
+/* ---------- 라이브 모듈: 티커 · 랭킹 · 스파크라인 · 카운트업 ---------- */
+let LIVE={at:null,items:null,latest:null}, LIVEM=null, FLASH={}, liveTimer=null;
+const nz=s=>String(s||"").replace(/\s/g,"");
+function matchApt(name){
+  const n=nz(name); if(n.length<2) return null;
+  return CURRENT.apts.find(d=>{ const m=nz(d.name); return m.includes(n)||n.includes(m); })||null;
+}
+const med=a=>{ const s=[...a].sort((x,y)=>x-y), m=s.length>>1; return s.length%2?s[m]:(s[m-1]+s[m])/2; };
+function snapshotReal(){ const o={}; CURRENT.apts.forEach(d=>{ const bp=basePrice(d,STATE.basis); if(bp) o[d.id]=bp.price; }); return o; }
+function diffReal(b){ const o={}; CURRENT.apts.forEach(d=>{ const bp=basePrice(d,STATE.basis); if(bp&&b[d.id]!=null&&bp.price!==b[d.id]) o[d.id]=bp.price>b[d.id]?1:-1; }); return o; }
+
+async function refreshLive(gu, dong, silent){
+  if(!silent) setLiveStatus("loading");
+  try{
+    const r = await (await fetch(`/api/trade?LAWD_CD=${gu.lawd}&months=12`)).json();
+    if(dong!==CURRENT_DONG) return;               // 그 사이 다른 동으로 이동
+    const summary=r.summary, items=r.items||[];
+    if(!summary || !Object.keys(summary).length){ setLiveStatus(silent&&LIVE.at?"live":""); return; }
+    const before=snapshotReal();
+    mergeTrade(summary);
+    FLASH=diffReal(before);
+    LIVE.at=new Date();
+    buildLive(items);
+    renderRank(); renderRegion(CURRENT.region); renderLiveUI();
+    setLiveStatus("live");
+  }catch(e){ console.warn("실거래 API 오류:", e); setLiveStatus("error"); }
+}
+
+/* 이 동 톱10 단지의 거래만 추려 그룹(단지+평형)별로 정리 */
+function buildLive(items){
+  const mine=[];
+  items.forEach(x=>{ if(x.canceled||!(x.amountEok>0)) return; const d=matchApt(x.apt); if(d) mine.push({...x,d}); });
+  mine.sort((a,b)=>b.date.localeCompare(a.date));
+  const groups={};
+  mine.forEach(x=>(groups[x.d.id+"|"+x.py] ||= []).push(x));   // 각 그룹은 최신순
+  mine.forEach(x=>{ const g=groups[x.d.id+"|"+x.py], i=g.indexOf(x), prev=g[i+1];
+    x.chg = prev ? (x.amountEok-prev.amountEok)/prev.amountEok*100 : null; });
+  LIVE.items=mine; LIVE.groups=groups; LIVE.latest=mine.length?mine[0].date:null;
+
+  // 월별 가격지수(단지·평형 중앙값 대비) / 거래량
+  const ym=x=>x.date.slice(0,7), months=[...new Set(mine.map(ym))].sort();
+  const idx={}, cnt={};
+  Object.values(groups).forEach(g=>{ if(g.length<2) return; const m=med(g.map(x=>x.amountEok)), byM={};
+    g.forEach(x=>(byM[ym(x)] ||= []).push(x.amountEok/m*100));
+    for(const k in byM) (idx[k] ||= []).push(med(byM[k])); });
+  mine.forEach(x=>cnt[ym(x)]=(cnt[ym(x)]||0)+1);
+  const pSeries=months.filter(k=>idx[k]).map(k=>idx[k].reduce((a,b)=>a+b,0)/idx[k].length);
+  const vSeries=months.map(k=>cnt[k]||0);
+  const pct=(a,b)=>b? Math.round((a/b-1)*1000)/10 : null;
+  const sum=a=>a.reduce((x,y)=>x+y,0), avg=a=>a.length?sum(a)/a.length:0;
+  let m3=null, vol=null;
+  if(pSeries.length>=4){ const r=pSeries.slice(-3), p=pSeries.slice(-6,-3); if(p.length) m3=pct(avg(r),avg(p)); }
+  if(vSeries.length>=4){ const r=vSeries.slice(-3), p=vSeries.slice(-6,-3); if(p.length&&sum(p)) vol=pct(sum(r),sum(p)); }
+  LIVEM = (m3!=null&&vol!=null&&pSeries.length>=3) ? {m3,vol,priceSeries:pSeries,volSeries:vSeries} : null;
+}
+
+function renderLiveUI(){
+  const tk=document.getElementById("ticker"), lw=document.getElementById("livewrap");
+  const items=LIVE.items||[];
+  if(!items.length){ tk.hidden=true; lw.hidden=true; return; }
+  // 티커
+  const fmtD=d=>d.slice(5).replace("-","/");
+  const one=items.slice(0,24).map(x=>{
+    const c=x.chg==null?"":` <span class="${x.chg>0?'up':x.chg<0?'dn':''}">${x.chg>0?'▲':x.chg<0?'▼':'–'}${Math.abs(x.chg).toFixed(1)}%</span>`;
+    return `<span class="tk-it"><b>${x.d.name}</b> ${x.py}평 <b class="tnum">${x.amountEok.toLocaleString(undefined,{maximumFractionDigits:2})}억</b>${x.floor?` ${x.floor}층`:""}${c} · ${fmtD(x.date)}</span>`; }).join("");
+  const mv=document.getElementById("tkmove"); mv.innerHTML=one+one;
+  mv.style.setProperty("--tkdur", Math.max(30, items.slice(0,24).length*4)+"s");
+  tk.hidden=false;
+  // 랭킹 위젯 (최근 90일 vs 직전 90일, 데이터 내 최신 계약일 기준)
+  const end=new Date(items[0].date), D=86400000;
+  const c90=new Date(end-90*D).toISOString().slice(0,10), c180=new Date(end-180*D).toISOString().slice(0,10);
+  const per={};
+  Object.values(LIVE.groups).forEach(g=>{
+    const d=g[0].d, rec=g.filter(x=>x.date>c90), prv=g.filter(x=>x.date>c180&&x.date<=c90);
+    const a=(per[d.id] ||= {d,vol:0,best:null});
+    a.vol+=rec.length;
+    if(rec.length&&prv.length){ const ch=(med(rec.map(x=>x.amountEok))/med(prv.map(x=>x.amountEok))-1)*100;
+      if(!a.best||g.length>a.best.n) a.best={ch,n:g.length,py:g[0].py,now:med(rec.map(x=>x.amountEok))}; }
+  });
+  const arr=Object.values(per);
+  const row=(i,nm,sub,r1,r2,cls)=>`<div class="lrow"><span class="n">${i}</span><span class="nm">${nm}<small>${sub}</small></span><span class="rv tnum">${r1}${r2?`<small class="${cls}">${r2}</small>`:""}</span></div>`;
+  const col=(t,list,fn)=>`<div class="livecol"><h3>${t}</h3>${list.length?list.map(fn).join(""):'<div class="lempty">해당 단지 없음</div>'}</div>`;
+  const vol=arr.filter(a=>a.vol>0).sort((a,b)=>b.vol-a.vol).slice(0,5);
+  const up=arr.filter(a=>a.best&&a.best.ch>0).sort((a,b)=>b.best.ch-a.best.ch).slice(0,5);
+  const dn=arr.filter(a=>a.best&&a.best.ch<0).sort((a,b)=>a.best.ch-b.best.ch).slice(0,5);
+  const eok=n=>n.toLocaleString(undefined,{maximumFractionDigits:2})+"억";
+  document.getElementById("livegrid").innerHTML=
+    col("거래 많은",vol,(a,i)=>row(i+1,a.d.name,`${a.d.brand||""}`,a.vol+"건","",""))+
+    col("많이 오른",up,(a,i)=>row(i+1,a.d.name,`${a.best.py}평 중앙값`,eok(a.best.now),"▲"+a.best.ch.toFixed(1)+"%","badge-up"))+
+    col("많이 내린",dn,(a,i)=>row(i+1,a.d.name,`${a.best.py}평 중앙값`,eok(a.best.now),"▼"+Math.abs(a.best.ch).toFixed(1)+"%","badge-down"));
+  lw.hidden=false;
+}
+
+function sparkSvg(vals,cls){
+  if(!vals||vals.length<2) return "";
+  const mn=Math.min(...vals), mx=Math.max(...vals), rg=(mx-mn)||1, W=100, H=28;
+  const pts=vals.map((v,i)=>`${(i/(vals.length-1)*W).toFixed(1)},${(H-3-(v-mn)/rg*(H-6)).toFixed(1)}`).join(" ");
+  const k=cls==="badge-up"?"up":cls==="badge-down"?"dn":"fl";
+  return `<svg class="spark ${k}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><polyline pathLength="1" points="${pts}"/></svg>`;
+}
+
+function countUp(root){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  root.querySelectorAll(".price,.scorenum,.cell .v.tnum,.srow .sp,.srow .ss .n").forEach(el=>{
+    const tn=[...el.childNodes].find(n=>n.nodeType===3&&/\d/.test(n.nodeValue)); if(!tn) return;
+    const m=tn.nodeValue.match(/^(\D*)(-?[\d,]*\.?\d+)(.*)$/s); if(!m) return;
+    const end=parseFloat(m[2].replace(/,/g,"")), dec=(m[2].split(".")[1]||"").length;
+    if(!isFinite(end)) return;
+    const t0=performance.now(), dur=650;
+    const f=t=>{ const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3), v=end*e;
+      tn.nodeValue=m[1]+v.toLocaleString(undefined,{minimumFractionDigits:dec,maximumFractionDigits:dec})+m[3];
+      if(p<1) requestAnimationFrame(f); else tn.nodeValue=m[1]+m[2]+m[3]; };
+    requestAnimationFrame(f);
+  });
 }
 
 /* ---------- 컨트롤 ---------- */
