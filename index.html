@@ -188,6 +188,52 @@ body{background:linear-gradient(0deg,rgba(8,27,36,.4),rgba(8,27,36,.4)),
   .title{font-size:22px}
 }
 </style>
+<style id="mw-theme">
+/* M-able wide 풍 대시보드 테마: 중성 블랙 + 타일 카드 + 좌측 레일 */
+:root{
+  --ink:#0b0c10;--ink-2:#16181f;--ink-3:#1e212a;--line:#2a2e39;--line-soft:#1f222b;
+  --teal:#4da3ff;--teal-dim:#2f6fb8;--brass:#ffd23f;--brass-dim:#c9a52b;
+  --paper:#f2f4f8;--mut:#8b93a3;--mut-2:#626a7a;--warn:#ff9a5c;
+  --up:#ff5a5f;--down:#4d8dff;--flat:#8b93a3;--r:12px;
+}
+body{background:var(--ink)}
+.wrap{max-width:1180px;padding:22px 24px 80px}
+.mast{border-bottom:none;padding-bottom:6px}
+.eyebrow,.eyebrow2{letter-spacing:.12em}
+.title{font-size:22px}
+.compass{display:none}
+.strip{gap:12px;background:none;border:none;border-radius:0;overflow:visible}
+.cell{border-radius:var(--r);padding:16px 18px}
+.cell .v{font-size:22px}
+.card,.srow,.pricepanel,.empty{border-color:transparent;background:var(--ink-2)}
+.card:hover,.srow:hover{border-color:var(--teal);transform:none;background:var(--ink-3)}
+.card.top{border-color:transparent;background:linear-gradient(180deg,rgba(255,210,63,.10),transparent 55%),var(--ink-2)}
+.rankgrid{grid-template-columns:repeat(auto-fill,minmax(520px,1fr))}
+.smalllist{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}
+.scorebar i{background:linear-gradient(90deg,var(--teal-dim),var(--teal))}
+.scorenum,.srow .ss .n,.rank-n{color:var(--brass)}
+.chip-btn,.tabs,.seg{background:var(--ink-2);border-color:var(--line-soft)}
+.chip-btn.gu[aria-selected="true"]{background:var(--ink-3);border-color:var(--brass);color:var(--brass)}
+.chip-btn.dong[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#06121f}
+.tab[aria-selected="true"]{background:var(--ink-3);color:var(--brass)}
+.segbtn[data-mode="real"][aria-selected="true"]{background:var(--teal);color:#06121f}
+.segbtn[data-mode="kb"][aria-selected="true"]{background:var(--brass);color:#1a1400}
+.viewtab[data-view="loan"]{color:var(--mut)}
+.viewtab[data-view="loan"][aria-selected="true"]{color:var(--paper)}
+.drawer{background:var(--ink);border-left-color:var(--line-soft)}
+.dhead{background:var(--ink-2)}
+.narr{color:#c9cfdb}
+.chip.pos{color:#9cc8ff}
+.scrim{background:rgba(0,0,0,.65)}
+@media(min-width:1024px){
+  body{padding-left:84px}
+  .viewtabs{position:fixed;left:0;top:0;bottom:0;width:84px;margin:0;padding:18px 6px;flex-direction:column;align-items:stretch;gap:6px;background:var(--ink-2);border-bottom:none;border-right:1px solid var(--line-soft);z-index:30}
+  .viewtab{margin:0;padding:12px 4px;font-size:12px;text-align:center;border:none;border-radius:10px;line-height:1.3}
+  .viewtab[aria-selected="true"]{background:var(--ink-3);color:var(--brass)}
+  .viewtab .tabbadge{display:block;margin:4px auto 0;width:max-content}
+}
+@media(max-width:640px){.wrap{padding:16px 14px 80px}.rankgrid,.smalllist{grid-template-columns:1fr}}
+</style>
 <!-- SEO:BEGIN -->
 <meta name="naver-site-verification" content="29b699bb0132e9ea350e9c8a4b52b1f3c16962e3">
 <meta name="description" content="시세 3종 — 실거래 국토부 신고가 (계약일 기준, 30일 내 신고 의무) · 호가 현재 플랫폼 매물가 (실거래 대비 갭이 클수록 협상 여지 있음) · KB·참고 KB국민은행 시세 (담보대출 기준가로 실제 활용됨). 동향은 KB부동산·한국부동산원 지역통계 기준. 종합점수 는 시세 …">
@@ -225,7 +271,7 @@ data-ad-height="50"></ins>
 </style>
 <!-- ADS:NEW END -->
 <!-- 카카오 광고 -->
-<div style="text-align:center;background:#081b24;padding:6px 0;">
+<div style="text-align:center;background:#0b0c10;padding:6px 0;">
 <ins class="kakao_ad_area" style="display:none;"
 data-ad-unit = "DAN-15Sw8np6dK9Kb4qK"
 data-ad-width = "728"
