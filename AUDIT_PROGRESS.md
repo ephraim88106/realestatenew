@@ -70,6 +70,7 @@ live:true로 등록**해야 사이트에 노출됨(방법론 8-b 참조). lawd�
   - ⚠️ 2026-11-19 예약 실행 **미처리(8회째 데이터 소스 차단, 11-18 실행 기록 없음)**: 프록시 CONNECT 거부(connect_rejected, policy denial) 동일 — `realestatenew.pages.dev`(실거래 API)·`apis.data.go.kr` 모두 curl 000(CONNECT tunnel failed 403). 도달 가능한 호스트는 `github.com`뿐. 전과 동일 원인이므로 **검증 없는 JSON 재작성·regions.json 등록은 하지 않음**. 사람 조치 필요(변경 없음): 예약 태스크 환경 네트워크 허용 도메인에 최소 `realestatenew.pages.dev` 추가.
   - ⚠️ 2026-11-20 예약 실행 **미처리(9회째 데이터 소스 차단)**: 동일 — `realestatenew.pages.dev`(실거래 API) curl 000(프록시 connect_rejected, HTTP 403). **검증 없는 JSON 재작성·regions.json 등록은 하지 않음**. 사람 조치 필요(변경 없음): 예약 태스크 환경 네트워크 허용 도메인에 최소 `realestatenew.pages.dev` 추가. 마지막 데이터 커밋은 2026-09-07 송현동(4f4f0d1)으로 74일간 동 데이터 갱신 없음.
   - ⚠️ 2026-11-21 예약 실행 **미처리(10회째 데이터 소스 차단)**: 동일 — `realestatenew.pages.dev`(실거래 API)·`apis.data.go.kr`·`apis.zigbang.com`·`apt.bong.kr`·`namu.wiki` 전부 curl 000(`CONNECT tunnel failed, response 403`). **검증 없는 JSON 재작성·regions.json 등록은 하지 않음**. 사람 조치 필요(변경 없음): 예약 태스크 환경 네트워크 허용 도메인에 최소 `realestatenew.pages.dev` 추가.
+  - ⚠️ 2026-11-22 예약 실행 **미처리(11회째 데이터 소스 차단)**: 동일 — `realestatenew.pages.dev`(실거래 API)·`namu.wiki`·`ko.wikipedia.org` 전부 curl 000(`CONNECT tunnel failed, response 403`). **검증 없는 JSON 재작성·regions.json 등록은 하지 않음**. 사람 조치 필요(변경 없음): 예약 태스크 환경 네트워크 허용 도메인에 최소 `realestatenew.pages.dev` 추가. 마지막 데이터 커밋은 2026-09-07 송현동(4f4f0d1)으로 76일간 동 데이터 갱신 없음.
 
 > 참고: 신규 동은 실거래·나무위키 조사 결과 84㎡ 아파트 실거래가 거의 없거나
 > 단지 자체가 빈약하면(예: 노후 빌라·단독 위주 동) 톱10을 못 채울 수 있음.
