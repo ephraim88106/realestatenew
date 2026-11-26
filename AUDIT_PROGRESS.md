@@ -74,6 +74,7 @@ live:true로 등록**해야 사이트에 노출됨(방법론 8-b 참조). lawd�
   - ⚠️ 2026-11-23 예약 실행 **미처리(12회째 데이터 소스 차단)**: 동일 — `realestatenew.pages.dev`(실거래 API)·`apis.data.go.kr`·`namu.wiki` 전부 curl 000(프록시 connect_rejected, HTTP 403). **검증 없는 JSON 재작성·regions.json 등록은 하지 않음**. 사람 조치 필요(변경 없음): 예약 태스크 환경 네트워크 허용 도메인에 최소 `realestatenew.pages.dev` 추가. 마지막 데이터 커밋은 2026-09-07 송현동(4f4f0d1)으로 77일간 동 데이터 갱신 없음.
   - ⚠️ 2026-11-24 예약 실행 **미처리(13회째 데이터 소스 차단)**: 동일 — `realestatenew.pages.dev`(실거래 API)·`apis.data.go.kr`·`namu.wiki` 전부 curl 000(`CONNECT tunnel failed, response 403`, 프록시 정책 거부). 우회 시도 없음. **검증 없는 JSON 재작성은 하지 않았음**(체크박스 `[ ]` 유지). 마지막 데이터 재작성 커밋은 2026-10-04로 51일째 갱신 없음. 해결은 사람만 가능 — 예약 태스크 환경 네트워크 허용 도메인에 `realestatenew.pages.dev`(필수)·`namu.wiki`·`apis.data.go.kr` 추가.
   - ⚠️ 2026-11-25 예약 실행 **미처리(14회째 데이터 소스 차단)**: 동일 — `realestatenew.pages.dev`(실거래 API)·`namu.wiki` curl 000(CONNECT 403). 우회 없음, 검증 없는 JSON 재작성 안 함. 마지막 데이터 재작성 커밋 2026-10-04(52일째 갱신 없음). 사람 조치: 허용 도메인에 `realestatenew.pages.dev`·`namu.wiki`·`apis.data.go.kr` 추가.
+  - ⚠️ 2026-11-26 예약 실행 **미처리(15회째 데이터 소스 차단)**: 동일 — `realestatenew.pages.dev`(실거래 API)·`apis.zigbang.com` curl 000(프록시 CONNECT 403). 우회 시도 없음. 검증 없는 JSON 재작성은 하지 않음(체크박스 `[ ]` 유지). 사람 조치 필요: 예약 태스크 환경 허용 도메인에 최소 `realestatenew.pages.dev` 추가.
 
 > 참고: 신규 동은 실거래·나무위키 조사 결과 84㎡ 아파트 실거래가 거의 없거나
 > 단지 자체가 빈약하면(예: 노후 빌라·단독 위주 동) 톱10을 못 채울 수 있음.
